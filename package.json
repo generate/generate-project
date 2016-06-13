@@ -1,0 +1,61 @@
+{
+  "name": "generate-project",
+  "description": "Generate a node.js project.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/generate/generate-project",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "generate/generate-project",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/generate-project/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "generator.js",
+    "index.js",
+    "templates"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "engine-base": "^0.1.2",
+    "generate-eslint": "^0.1.2",
+    "generate-license": "^0.1.6",
+    "generate-package": "^0.1.6",
+    "generate-travis": "^0.1.1",
+    "is-valid-app": "^0.1.1"
+  },
+  "devDependencies": {
+    "delete": "^0.3.2",
+    "generate": "^0.7.3",
+    "gulp-format-md": "^0.1.9",
+    "mocha": "^2.5.3",
+    "npm-install-global": "^0.1.2"
+  },
+  "keywords": [
+    "generate",
+    "generateplugin",
+    "generator",
+    "plugin",
+    "project"
+  ],
+  "lintDeps": {
+    "ignore": []
+  },
+  "verb": {
+    "layout": "default",
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "related": {
+      "list": []
+    },
+    "reflinks": [
+      "verb"
+    ]
+  }
+}

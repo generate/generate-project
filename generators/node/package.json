@@ -1,0 +1,7 @@
+{
+  "name": "generate-node",
+  "description": "Generate a node.js project.",
+  "version": "0.1.0",
+  "main": "index.js",
+  "private": true
+}

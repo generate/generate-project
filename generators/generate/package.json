@@ -1,0 +1,10 @@
+{
+  "name": "generate-generator",
+  "description": "Generate a generate generator.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/generate-generator",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/generate-generator",
+  "main": "index.js",
+  "private": true
+}
