@@ -1,4 +1,6 @@
 ---
+rename: 
+  basename: 'index.js'
 install:
   devDependencies: ['through2']
 ---
