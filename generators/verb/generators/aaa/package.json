@@ -1,9 +1,0 @@
-{
-  "name": "aaa",
-  "description": "Generate a node.js project.",
-  "version": "0.1.0",
-  "homepage": "https://github.com/jonschlinkert/a",
-  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
-  "repository": "jonschlinkert/a",
-  "main": "index.js"
-}
