@@ -51,7 +51,7 @@ module.exports = function(app, base) {
    * @api public
    */
 
-  task('project', ['files', 'index']);
+  app.task('project', ['files', 'index']);
 
   /**
    * Scaffold out basic project for a [gulp][] plugin.
