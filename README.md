@@ -91,7 +91,7 @@ Running `$ gen project` will run the generator's [default task](#packagedefault)
 
 ### Running tasks
 
-Tasks on `generate-project` are by run passing the name of the task to run after the generator name, delimited by a comma:
+Tasks on `generate-project` are run by passing the name of the task to run after the generator name, delimited by a comma:
 
 ```sh
 $ gen project:foo
