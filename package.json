@@ -1,7 +1,7 @@
 {
   "name": "generate-project",
   "description": "Scaffold out complete code projects from the command line, or use this generator as a plugin in other generators to provide baseline functionality.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "https://github.com/generate/generate-project",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "generate/generate-project",
@@ -57,7 +57,9 @@
     "front",
     "frontend",
     "generate",
+    "generate-generator",
     "generategenerator",
+    "generate-plugin",
     "generateplugin",
     "generator",
     "init",
