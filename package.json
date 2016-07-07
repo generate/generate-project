@@ -1,17 +1,18 @@
 {
   "name": "generate-project",
-  "description": "Generate a node.js project.",
+  "description": "Scaffold out complete code projects from the command line, or use this generator as a plugin in other generators to provide baseline functionality.",
   "version": "0.1.0",
   "homepage": "https://github.com/generate/generate-project",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "generate/generate-project",
   "bugs": {
-    "url": "https://github.com/jonschlinkert/generate-project/issues"
+    "url": "https://github.com/generate/generate-project/issues"
   },
   "license": "MIT",
   "files": [
-    "generator.js",
     "index.js",
+    "LICENSE",
+    "README.md",
     "templates"
   ],
   "main": "index.js",
@@ -22,40 +23,98 @@
     "test": "mocha"
   },
   "dependencies": {
-    "engine-base": "^0.1.2",
+    "generate-collections": "^0.3.5",
+    "generate-defaults": "^0.3.1",
+    "generate-editorconfig": "^0.1.3",
     "generate-eslint": "^0.1.2",
-    "generate-license": "^0.1.6",
-    "generate-package": "^0.1.6",
-    "generate-travis": "^0.1.1",
-    "is-valid-app": "^0.1.1"
+    "generate-git": "^0.1.9",
+    "generate-install": "^0.1.4",
+    "generate-license": "^0.2.0",
+    "generate-package": "^0.3.0",
+    "generate-travis": "^0.1.2",
+    "is-valid-app": "^0.2.0"
   },
   "devDependencies": {
+    "archy": "^1.0.0",
     "delete": "^0.3.2",
-    "generate": "^0.7.3",
+    "extend-shallow": "^2.0.1",
+    "generate": "^0.8.0",
     "gulp-format-md": "^0.1.9",
     "mocha": "^2.5.3",
-    "npm-install-global": "^0.1.2"
+    "npm-install-global": "^0.1.2",
+    "verb-readme-generator": "^0.1.18"
   },
   "keywords": [
+    "boilerplate",
+    "build",
+    "cli",
+    "cli-app",
+    "command-line",
+    "create",
+    "dev",
+    "development",
+    "framework",
+    "front",
+    "frontend",
     "generate",
+    "generategenerator",
     "generateplugin",
     "generator",
+    "init",
+    "initialize",
+    "new",
     "plugin",
-    "project"
+    "project",
+    "projects",
+    "scaffold",
+    "scaffolder",
+    "scaffolding",
+    "template",
+    "templates",
+    "webapp",
+    "yeoman",
+    "yo"
   ],
   "lintDeps": {
-    "ignore": []
+    "ignore": [
+      "scaffolds",
+      "templates"
+    ]
   },
   "verb": {
-    "layout": "default",
+    "toc": true,
+    "layout": "common-minimal",
+    "tasks": [
+      "readme"
+    ],
     "plugins": [
       "gulp-format-md"
     ],
     "related": {
-      "list": []
+      "list": [
+        "generate-package",
+        "generate-install",
+        "generate-dest"
+      ]
     },
     "reflinks": [
-      "verb"
-    ]
+      "assemble",
+      "base",
+      "generate",
+      "generate-dest",
+      "generate-editorconfig",
+      "generate-eslint",
+      "generate-git",
+      "generate-license",
+      "generate-package",
+      "generate-travis",
+      "gulp",
+      "verb",
+      "verb-readme-generator",
+      "generate-install"
+    ],
+    "lint": {
+      "reflinks": true
+    }
   }
 }
