@@ -8,6 +8,7 @@ Scaffold out complete code projects from the command line, or use this generator
 - [Command line usage](#command-line-usage)
   * [Install globally](#install-globally)
   * [Running generate-project](#running-generate-project)
+  * [Help](#help)
   * [Running tasks](#running-tasks)
 - [Available tasks](#available-tasks)
 - [Examples](#examples)
@@ -80,13 +81,33 @@ $ npm install --global generate-project
 
 You should now be able to run `generate-project` with the following command:
 
-```js
+```sh
 $ gen project
 ```
 
 **What will happen?**
 
 Running `$ gen project` will run the generator's [default task](#packagedefault), which will prompt you for any information that's missing, then it will render templates using your answers and write a [the resulting files](#available-tasks) to the current working directory.
+
+**What you should see in the terminal**
+
+If completed successfully, you should see both `starting` and `finished` events in the terminal, like the following:
+
+```sh
+[00:44:21] starting ...
+...
+[00:44:22] finished ✔
+```
+
+If you do not see one or both of those events, please [let us know about it](../../issues).
+
+### Help
+
+To see a general help menu and available commands for Generate's CLI, run:
+
+```sh
+$ gen help
+```
 
 ### Running tasks
 
