@@ -227,13 +227,13 @@ Visit Generate's [documentation for tasks](https://github.com/generate/generate/
 
 ### project:min
 
-Example of running the [project:minimal](#projectminimal) task.
+Example of running the [project:minimal](#minimal) task.
 
 ![generate-project minimal project example](https://raw.githubusercontent.com/generate/generate-project/master/docs/demo-gulp-plugin.gif)
 
 ### project:gulp-plugin
 
-Example of running the [project:gulp-plugin](#projectgulp-plugin) task.
+Example of running the [project:gulp-plugin](#gulp-plugin) task.
 
 ![generate-project gulp plugin project example](https://raw.githubusercontent.com/generate/generate-project/master/docs/demo-gulp-plugin.gif)
 
