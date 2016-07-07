@@ -3,7 +3,6 @@
 var path = require('path');
 var src = path.resolve.bind(path, __dirname, 'templates');
 var isValid = require('is-valid-app');
-var tree = require('./tree');
 
 module.exports = function(app, base) {
   if (!isValid(app, 'generate-project')) return;
