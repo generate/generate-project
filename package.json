@@ -30,7 +30,7 @@
     "generate-git": "^0.1.9",
     "generate-install": "^0.1.4",
     "generate-license": "^0.2.0",
-    "generate-package": "^0.3.0",
+    "generate-package": "^0.3.1",
     "generate-travis": "^0.1.2",
     "is-valid-app": "^0.2.0"
   },
