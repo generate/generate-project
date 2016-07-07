@@ -87,7 +87,11 @@ $ gen project
 
 **What will happen?**
 
-Running `$ gen project` will run the generator's [default task](#packagedefault), which will prompt you for any information that's missing, then it will render templates using your answers and write a [the resulting files](#available-tasks) to the current working directory.
+Running `$ gen project` will run the generator's [default task](#default), which will:
+
+1. prompt you for any information that's missing
+2. render templates using your answers
+3. write a [the resulting files](#available-tasks) to the current working directory
 
 **What you should see in the terminal**
 
