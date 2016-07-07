@@ -7,7 +7,7 @@ var assert = require('assert');
 var generate = require('generate');
 var npm = require('npm-install-global');
 var del = require('delete');
-var generator = require('./');
+var generator = require('..');
 var app;
 
 var cwd = path.resolve.bind(path, __dirname, 'actual');
@@ -25,6 +25,8 @@ function exists(name, cb) {
 }
 
 describe('generate-project', function() {
+  this.slow(250);
+
   if (!process.env.CI && !process.env.TRAVIS) {
     before(function(cb) {
       npm.maybeInstall('generate', cb);
@@ -37,8 +39,8 @@ describe('generate-project', function() {
     app.option('dest', cwd());
 
     // pre-populate template data to avoid prompts from `ask` helper
-    app.option('askWhen', 'not-answered');
-    app.data({
+    app.base.option('askWhen', 'not-answered');
+    app.base.data({
       author: {
         name: 'Jon Schlinkert',
         username: 'jonschlnkert',
@@ -81,16 +83,6 @@ describe('generate-project', function() {
     it('should run the `default` task with .generate', function(cb) {
       app.use(generator);
       app.generate('default', exists('package.json', cb));
-    });
-
-    it('should run the `package` task with .build', function(cb) {
-      app.use(generator);
-      app.build('package', exists('package.json', cb));
-    });
-
-    it('should run the `package` task with .generate', function(cb) {
-      app.use(generator);
-      app.generate('package', exists('package.json', cb));
     });
   });
 
