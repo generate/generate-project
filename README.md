@@ -23,7 +23,6 @@ Scaffold out complete code projects from the command line, or use this generator
 - [Customization](#customization)
   * [Destination directory](#destination-directory)
   * [Overriding templates](#overriding-templates)
-- [Customization](#customization-1)
 - [About](#about)
   * [Related projects](#related-projects)
   * [Contributing](#contributing)
@@ -309,6 +308,8 @@ Visit the [generator docs](https://github.com/generate/generate/blob/master/docs
 
 ## Customization
 
+The following instructions can be used to override settings in `generate-project`. Visit the [Generate documentation](https://github.com/generate/generate/blob/master/docs/overriding-defaults.md) to learn about other ways to override defaults.
+
 ### Destination directory
 
 To customize the destination directory, install [generate-dest](https://github.com/generate/generate-dest) globally, then in the command line prefix `dest` before any other generator names.
@@ -320,17 +321,6 @@ $ gen dest project
 ```
 
 ### Overriding templates
-
-You can override any of the templates by adding a template of the same name to the `templates` directory in user home. For example, to override the `.editorconfig` template, add a template at the following path `~/templates/.editorconfig`.
-
-<br>
-<br>
-
-## Customization
-
-The following instructions can be used to override settings in `generate-project`. Visit the [Generate documentation](https://github.com/generate/generate/blob/master/docs/overriding-defaults.md) to learn about other ways to override defaults.
-
-**Overriding the template**
 
 You can override a template by adding a template of the same name to the `templates` directory in user home. For example, to override the `package.json` template, add a template at the following path `~/generate/generate-project/templates/package.json`, where `~/` is the user-home directory that `os.homedir()` resolves to on your system.
 
