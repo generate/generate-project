@@ -156,8 +156,8 @@ module.exports = function(app, base) {
 
 function createTask(app) {
   return function(name, dependencies, pattern) {
-    var dest = app.options.dest || app.cwd;
     app.task(name, dependencies, function() {
+      var dest = app.options.dest || app.cwd;
       return app.src(src(pattern))
         .pipe(app.renderFile('*'))
         .pipe(app.conflicts(dest))
