@@ -1,1 +1,0 @@
-{%= toc(include("tldr.md")) %}
