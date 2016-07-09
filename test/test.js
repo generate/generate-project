@@ -25,7 +25,7 @@ function exists(name, cb) {
 }
 
 describe('generate-project', function() {
-  this.slow(250);
+  this.slow(350);
 
   if (!process.env.CI && !process.env.TRAVIS) {
     before(function(cb) {
@@ -46,6 +46,9 @@ describe('generate-project', function() {
         username: 'jonschlnkert',
         url: 'https://github.com/jonschlinkert'
       },
+      name: 'foo',
+      description: 'bar',
+      version: '0.1.0',
       project: {
         name: 'foo',
         description: 'bar',
@@ -114,6 +117,18 @@ describe('generate-project', function() {
     it('should run the `default` task when defined explicitly', function(cb) {
       app.register('project', generator);
       app.generate('project:default', exists('package.json', cb));
+    });
+  });
+
+  describe('project:minimal', function() {
+    it('should run the minimal task on the generator', function(cb) {
+      app.register('project', generator);
+      app.generate('project:minimal', exists('package.json', cb));
+    });
+
+    it('should run the `min` alias task', function(cb) {
+      app.register('project', generator);
+      app.generate('project:min', exists('package.json', cb));
     });
   });
 

@@ -47,6 +47,9 @@ describe('plugins', function() {
         url: 'https://github.com/jonschlinkert'
       },
       basename: 'LICENSE',
+      name: 'foo',
+      description: 'bar',
+      version: '0.1.0',
       project: {
         name: 'foo',
         description: 'bar',
