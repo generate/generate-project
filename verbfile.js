@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(verb) {
-  verb.use(require('verb-readme-generator'));
+  verb.use(require('verb-generate-readme'));
   verb.generator('project', require('./'));
 
   verb.helper('fileList', function(name) {
