@@ -6,7 +6,6 @@ var isValid = require('is-valid-app');
 
 module.exports = function(app, base) {
   if (!isValid(app, 'generate-project')) return;
-  var task = createTask(app);
 
   /**
    * Register other "micro-generators" as plugins
@@ -17,10 +16,18 @@ module.exports = function(app, base) {
   app.use(require('generate-editorconfig'));
   app.use(require('generate-eslint'));
   app.use(require('generate-git'));
+  app.use(require('generate-install'));
   app.use(require('generate-license'));
   app.use(require('generate-package'));
   app.use(require('generate-travis'));
-  app.use(require('generate-install'));
+
+  /**
+   * Sub-generators
+   */
+
+  app.register('mocha', function() {
+    this.use(require('generate-mocha'));
+  });
 
   /**
    * Task for generating files from registered micro-generators.
@@ -56,31 +63,30 @@ module.exports = function(app, base) {
    * Scaffold out basic project for a [gulp][] plugin.
    *
    * ```sh
-   * $ gen project:gulp-plugin
-   * # also aliased as
-   * $ gen project:gp
+   * $ gen project:gulp
    * ```
-   * @name gulp-plugin
+   * @name gulp
    * @api public
    */
 
-  app.task('gp', ['gulp-plugin']);
-  task('gulp-plugin', ['files'], 'gulp-plugin.js');
+  app.task('gulp', ['gf', 'gp', 'files']);
+  task(app, 'gf', 'gulp/gulpfile.js');
+  task(app, 'gp', 'gulp/plugin.js');
 
   /**
    * Scaffold out a basic project for a [base][] plugin.
    *
    * ```sh
-   * $ gen project:base-plugin
-   * # also aliased as
-   * $ gen project:bp
+   * $ gen project:base
    * ```
-   * @name base-plugin
+   * @name base
    * @api public
    */
 
-  app.task('bp', ['base-plugin']);
-  task('base-plugin', ['files'], 'base-plugin.js');
+  task(app, 'base', 'base/*.js', ['files', 'base-tests']);
+  app.task('base-tests', function(cb) {
+    app.generate('mocha:base', cb);
+  });
 
   /**
    * Scaffold out a minimal code project,
@@ -108,7 +114,7 @@ module.exports = function(app, base) {
    * @api public
    */
 
-  app.task('docs', ['minimal', 'editorconfig', 'verbmd']);
+  app.task('docs', ['minimal', 'editorconfig']);
 
   /**
    * Scaffold out a basic [generate][] generator project.
@@ -122,7 +128,9 @@ module.exports = function(app, base) {
    * @api public
    */
 
-  task('gen', ['files'], 'generator/*.js');
+  app.task('gen', ['generator']);
+  task(app, 'generator', 'generator/*.js', ['files']);
+  test(app, 'generator');
 
   /**
    * Generate an `index.js` file. This task is used for composition with other tasks.
@@ -134,7 +142,7 @@ module.exports = function(app, base) {
    * @api public
    */
 
-  task('index', [], 'index.js');
+  task(app, 'index', 'index.js');
 
   /**
    * Generate a basic node.js project, then prompt to install dependencies
@@ -154,14 +162,18 @@ module.exports = function(app, base) {
  * Create a task with the given `name` and glob `pattern`
  */
 
-function createTask(app) {
-  return function(name, dependencies, pattern) {
-    app.task(name, dependencies, function() {
-      var dest = app.options.dest || app.cwd;
-      return app.src(src(pattern))
-        .pipe(app.renderFile('*'))
-        .pipe(app.conflicts(dest))
-        .pipe(app.dest(dest));
-    });
-  };
+function task(app, name, pattern, dependencies) {
+  app.task(name, dependencies || [], function() {
+    var dest = app.options.dest || app.cwd;
+    return app.src(src(pattern))
+      .pipe(app.renderFile('*'))
+      .pipe(app.conflicts(dest))
+      .pipe(app.dest(dest));
+  });
+}
+
+function test(app, name) {
+  app.task(`${name}-tests`, function(cb) {
+    app.generate(`mocha:${name}`, cb);
+  });
 }
