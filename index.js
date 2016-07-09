@@ -156,13 +156,12 @@ module.exports = function(app, base) {
 
 function createTask(app) {
   return function(name, dependencies, pattern) {
+    var dest = app.options.dest || app.cwd;
     app.task(name, dependencies, function() {
       return app.src(src(pattern))
         .pipe(app.renderFile('*'))
         .pipe(app.conflicts(dest))
-        .pipe(app.dest(function(file) {
-          return app.options.dest || app.cwd;
-        }));
+        .pipe(app.dest(dest));
     });
   };
 }
