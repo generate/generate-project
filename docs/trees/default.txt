@@ -1,0 +1,9 @@
+.
+├── .editorconfig
+├── .eslintrc.json
+├── .gitattributes
+├── .gitignore
+├── .travis.yml
+├── index.js
+├── LICENSE
+└── package.json
