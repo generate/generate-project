@@ -30,7 +30,14 @@ module.exports = function(app, base) {
   });
 
   /**
-   * Task for generating files from registered micro-generators.
+   * Generates files from all registered micro-generators (runs each generator's `default`
+   * task).
+   *
+   * ```sh
+   * $ gen files
+   * ```
+   * @name files
+   * @api public
    */
 
   app.task('files', [
@@ -129,7 +136,7 @@ module.exports = function(app, base) {
    */
 
   app.task('gen', ['generator']);
-  task(app, 'generator', 'generator/*.js', ['files']);
+  task(app, 'generator', 'generator/*.js', ['files', 'generator-tests']);
   test(app, 'generator');
 
   /**
@@ -156,7 +163,7 @@ module.exports = function(app, base) {
    */
 
   app.task('default', ['project', 'install']);
-};
+}
 
 /**
  * Create a task with the given `name` and glob `pattern`
