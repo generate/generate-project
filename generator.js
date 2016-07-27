@@ -20,12 +20,13 @@ module.exports = function(app, base) {
    * Micro-generator plugins
    */
 
+  app.use(require('generate-package'));
   app.use(require('generate-editorconfig'));
   app.use(require('generate-eslint'));
   app.use(require('generate-gitattributes'));
   app.use(require('generate-gitignore'));
   app.use(require('generate-license'));
-  app.use(require('generate-package'));
+  app.use(require('generate-readme'));
   app.use(require('generate-travis'));
 
   /**
@@ -40,12 +41,13 @@ module.exports = function(app, base) {
    */
 
   app.task('files', [
+    'package',
+    'readme',
+    'mit',
     'editorconfig',
     'eslintrc',
     'gitattributes',
     'gitignore',
-    'mit',
-    'package',
     'travis'
   ]);
 
@@ -92,20 +94,7 @@ module.exports = function(app, base) {
    */
 
   app.task('min', ['minimal']);
-  app.task('minimal', ['package', 'mit', 'gitignore', 'gitattributes']);
-
-  /**
-   * Scaffold out minimal code project, along with a [.verb.md](https://github.com/verbose/verb)
-   * readme template.
-   *
-   * ```sh
-   * $ gen project:docs
-   * ```
-   * @name docs
-   * @api public
-   */
-
-  app.task('docs', ['minimal', 'editorconfig']);
+  app.task('minimal', ['package', 'readme', 'mit', 'gitignore', 'gitattributes']);
 
   /**
    * Scaffold out a basic [generate][] generator project.
