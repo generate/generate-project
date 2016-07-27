@@ -5,21 +5,23 @@ var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
 var generate = require('generate');
+var isValid = require('is-valid-app');
 var npm = require('npm-install-global');
 var del = require('delete');
+var pkg = require('../package');
 var generator = require('..');
 var app;
 
-var cwd = path.resolve.bind(path, __dirname, 'actual');
+var actual = path.resolve.bind(path, __dirname, 'actual');
 
 function exists(name, cb) {
   return function(err) {
     if (err) return cb(err);
-    var filepath = cwd(name);
+    var filepath = actual(name);
     fs.stat(filepath, function(err, stat) {
       if (err) return cb(err);
       assert(stat);
-      del(path.dirname(filepath), cb);
+      del(actual(), cb);
     });
   };
 }
@@ -33,19 +35,24 @@ describe('generate-project', function() {
     });
   }
 
-  beforeEach(function() {
+  before(function(cb) {
+    del(actual(), cb);
+  });
+
+  beforeEach(function(cb) {
     app = generate({silent: true});
-    app.cwd = cwd();
-    app.option('dest', cwd());
+    app.cwd = actual();
+    app.option('dest', actual());
 
     // pre-populate template data to avoid prompts from `ask` helper
-    app.base.option('askWhen', 'not-answered');
-    app.base.data({
+    app.option('askWhen', 'not-answered');
+    app.data({
       author: {
         name: 'Jon Schlinkert',
         username: 'jonschlnkert',
         url: 'https://github.com/jonschlinkert'
       },
+      basename: 'LICENSE',
       name: 'foo',
       description: 'bar',
       version: '0.1.0',
@@ -55,23 +62,14 @@ describe('generate-project', function() {
         version: '0.1.0'
       }
     });
+    del(actual('*'), cb);
   });
 
-  describe('plugin', function() {
-    it('should only register the plugin once', function(cb) {
-      var count = 0;
-      app.on('plugin', function(name) {
-        if (name === 'generate-project') {
-          count++;
-        }
-      });
-      app.use(generator);
-      app.use(generator);
-      app.use(generator);
-      assert.equal(count, 1);
-      cb();
-    });
+  afterEach(function(cb) {
+    del(actual('*'), cb);
+  });
 
+  describe('tasks', function() {
     it('should extend tasks onto the instance', function() {
       app.use(generator);
       assert(app.tasks.hasOwnProperty('default'));
@@ -92,12 +90,10 @@ describe('generate-project', function() {
   if (!process.env.CI && !process.env.TRAVIS) {
     describe('generator (CLI)', function() {
       it('should run the default task using the `generate-project` name', function(cb) {
-        app.use(generator);
         app.generate('generate-project', exists('package.json', cb));
       });
 
       it('should run the default task using the `project` generator alias', function(cb) {
-        app.use(generator);
         app.generate('project', exists('package.json', cb));
       });
     });
@@ -165,8 +161,7 @@ describe('generate-project', function() {
       app
         .register('foo', generator)
         .register('bar', generator)
-        .register('baz', generator)
-
+        .register('baz', generator);
       app.generate('foo.bar.baz', exists('package.json', cb));
     });
   });
