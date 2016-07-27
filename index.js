@@ -1,33 +1,32 @@
 'use strict';
 
 var path = require('path');
-var src = path.resolve.bind(path, __dirname, 'templates');
+var tree = require('base-fs-tree');
 var isValid = require('is-valid-app');
+var src = path.resolve.bind(path, __dirname, 'templates');
 
 module.exports = function(app, base) {
   if (!isValid(app, 'generate-project')) return;
 
   /**
-   * Register other "micro-generators" as plugins
+   * Plugins
    */
 
-  app.use(require('generate-collections'));
+  app.use(tree({name: 'generate-project'}));
   app.use(require('generate-defaults'));
+  app.use(require('generate-install'));
+
+  /**
+   * Micro-generator plugins
+   */
+
   app.use(require('generate-editorconfig'));
   app.use(require('generate-eslint'));
-  app.use(require('generate-git'));
-  app.use(require('generate-install'));
+  app.use(require('generate-gitattributes'));
+  app.use(require('generate-gitignore'));
   app.use(require('generate-license'));
   app.use(require('generate-package'));
   app.use(require('generate-travis'));
-
-  /**
-   * Sub-generators
-   */
-
-  app.register('mocha', function() {
-    this.use(require('generate-mocha'));
-  });
 
   /**
    * Generates files from all registered micro-generators (runs each generator's `default`
@@ -42,12 +41,12 @@ module.exports = function(app, base) {
 
   app.task('files', [
     'editorconfig',
-    'eslint',
+    'eslintrc',
     'gitattributes',
     'gitignore',
-    'travis',
+    'mit',
     'package',
-    'license'
+    'travis'
   ]);
 
   /**
@@ -81,21 +80,6 @@ module.exports = function(app, base) {
   task(app, 'gp', 'gulp/plugin.js');
 
   /**
-   * Scaffold out a basic project for a [base][] plugin.
-   *
-   * ```sh
-   * $ gen project:base
-   * ```
-   * @name base
-   * @api public
-   */
-
-  task(app, 'base', 'base/*.js', ['files', 'base-tests']);
-  app.task('base-tests', function(cb) {
-    app.generate('mocha:base', cb);
-  });
-
-  /**
    * Scaffold out a minimal code project,
    *
    * ```sh
@@ -108,7 +92,7 @@ module.exports = function(app, base) {
    */
 
   app.task('min', ['minimal']);
-  app.task('minimal', ['package', 'license', 'gitignore', 'gitattributes']);
+  app.task('minimal', ['package', 'mit', 'gitignore', 'gitattributes']);
 
   /**
    * Scaffold out minimal code project, along with a [.verb.md](https://github.com/verbose/verb)
@@ -136,8 +120,19 @@ module.exports = function(app, base) {
    */
 
   app.task('gen', ['generator']);
-  task(app, 'generator', 'generator/*.js', ['files', 'generator-tests']);
-  test(app, 'generator');
+  task(app, 'generator', 'generator/*.js', ['files']);
+
+  /**
+   * Scaffold out a basic template helper project.
+   *
+   * ```sh
+   * $ gen project:helper
+   * ```
+   * @name helper
+   * @api public
+   */
+
+  task(app, 'helper', 'helper/*.js', ['files']);
 
   /**
    * Generate an `index.js` file. This task is used for composition with other tasks.
@@ -162,7 +157,7 @@ module.exports = function(app, base) {
    * @api public
    */
 
-  app.task('default', ['project', 'install']);
+  app.task('default', ['project']);
 }
 
 /**
@@ -170,17 +165,10 @@ module.exports = function(app, base) {
  */
 
 function task(app, name, pattern, dependencies) {
-  app.task(name, dependencies || [], function() {
-    var dest = app.options.dest || app.cwd;
-    return app.src(src(pattern))
+  app.task(name, dependencies || [], function(cb) {
+    return app.src(pattern, {cwd: src()})
       .pipe(app.renderFile('*'))
-      .pipe(app.conflicts(dest))
-      .pipe(app.dest(dest));
-  });
-}
-
-function test(app, name) {
-  app.task(`${name}-tests`, function(cb) {
-    app.generate(`mocha:${name}`, cb);
+      .pipe(app.conflicts(app.cwd))
+      .pipe(app.dest(app.cwd));
   });
 }
