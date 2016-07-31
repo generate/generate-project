@@ -87,8 +87,10 @@
     ]
   },
   "verb": {
-    "toc": true,
-    "layout": "common-minimal",
+    "toc": {
+      "method": "preWrite"
+    },
+    "layout": "generator",
     "tasks": [
       "readme"
     ],
