@@ -13,17 +13,13 @@ var generator = require('..');
 var app;
 
 var cwd = path.resolve.bind(path, process.cwd());
+var tests = path.resolve.bind(path, __dirname);
 var actual = path.resolve.bind(path, __dirname, 'actual');
 
 function exists(name, cb) {
   return function(err) {
     if (err) return cb(err);
-    var filepath = actual(name);
-    fs.stat(filepath, function(err, stat) {
-      if (err) return cb(err);
-      assert(stat);
-      cb();
-    });
+    fs.stat(actual(name), cb);
   };
 }
 
@@ -37,40 +33,23 @@ describe('generate-project', function() {
   }
 
   before(function(cb) {
-    del([cwd('test/trees'), actual()], cb);
+    del([tests('actual'), tests('trees')], cb);
   });
 
-  // after(function(cb) {
-  //   del(actual(), cb);
-  // });
+  after(function(cb) {
+    del([tests('actual'), tests('trees')], cb);
+  });
 
   beforeEach(function() {
     app = generate({silent: true});
-
     app.cwd = actual();
+
+    // pre-populate template data to avoid prompts from `ask` helper
+    app.option('askWhen', 'not-answered');
     app.option('dest', actual());
     app.option('trees', cwd('test/trees'));
     app.option('overwrite', function(file) {
       return /actual/.test(file.path);
-    });
-
-    // pre-populate template data to avoid prompts from `ask` helper
-    app.option('askWhen', 'not-answered');
-    app.data({
-      author: {
-        name: 'Jon Schlinkert',
-        username: 'jonschlnkert',
-        url: 'https://github.com/jonschlinkert'
-      },
-      basename: 'LICENSE',
-      name: 'foo',
-      description: 'bar',
-      version: '0.1.0',
-      project: {
-        name: 'foo',
-        description: 'bar',
-        version: '0.1.0'
-      }
     });
   });
 
@@ -142,7 +121,7 @@ describe('generate-project', function() {
       app.generate('project:editorconfig', exists('.editorconfig', cb));
     });
 
-    it.only('should generate dotfiles', function(cb) {
+    it('should generate dotfiles', function(cb) {
       app.register('project', generator);
       app.generate('project:dotfiles', exists('.editorconfig', cb));
     });
@@ -182,11 +161,6 @@ describe('generate-project', function() {
     it('should generate a tree for the minimal task', function(cb) {
       app.register('project', generator);
       app.generate('project:tree-minimal', exists('../trees/minimal-dest.txt', cb));
-    });
-
-    it('should generate a tree for the min task alias', function(cb) {
-      app.register('project', generator);
-      app.generate('project:tree-min', exists('../trees/min-dest.txt', cb));
     });
 
     it('should generate a tree for the project task', function(cb) {

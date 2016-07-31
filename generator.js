@@ -2,10 +2,8 @@
 
 var path = require('path');
 var util = require('util');
-var clone = require('clone-deep');
 var tree = require('base-fs-tree');
 var isValid = require('is-valid-app');
-var compare = require('./compare');
 
 module.exports = function(app) {
   if (!isValid(app, 'generate-project')) return;
@@ -15,24 +13,7 @@ module.exports = function(app) {
    * Plugins
    */
 
-  app.use(tree({name: 'generate-project', write: false}));
-  app.option('treename', function(file) {
-    file.stem = file.stem.replace(/generate-project-/, '');
-  });
-
-  app.preWrite(/./, function(file, next) {
-    if (app.options.tree && !/tree/.test(file.path)) {
-      file.contents = null;
-    }
-    next();
-  });
-
-  // app.on('tree', function(namespace, name, prop, tree) {
-  //   if (prop === 'dest') {
-  //     trees[name] = clone(Object.keys(tree[namespace][prop].cwd));
-  //   }
-  // });
-
+  app.use(tree({name: 'generate-project'}));
   app.use(require('generate-defaults'));
   app.use(require('generate-install'));
 
@@ -51,8 +32,19 @@ module.exports = function(app) {
   app.use(require('generate-travis'));
 
   /**
-   * Generates files from all registered micro-generators (runs each generator's `default`
-   * task).
+   * Generates the [necessary files](#default-1) for a basic node.js project.
+   *
+   * ```sh
+   * $ gen project
+   * ```
+   * @name default
+   * @api public
+   */
+
+  task(app, 'default', null, ['project']);
+
+  /**
+   * Runs the `default` task on all registered micro-generators.
    *
    * ```sh
    * $ gen project:files
@@ -61,7 +53,19 @@ module.exports = function(app) {
    * @api public
    */
 
-  app.task('files', ['dotfiles', 'rootfiles']);
+  task(app, 'files', null, ['dotfiles', 'rootfiles']);
+
+  /**
+   * Generate a basic `index.js` file. This task is used for composition with other tasks.
+   *
+   * ```sh
+   * $ gen project:index
+   * ```
+   * @name index
+   * @api public
+   */
+
+  task(app, 'index', 'index.js');
 
   /**
    * Generate the dotfiles from registered micro-generators .
@@ -73,7 +77,7 @@ module.exports = function(app) {
    * @api public
    */
 
-  app.task('dotfiles', [
+  task(app, 'dotfiles', null, [
     'editorconfig',
     'eslintrc',
     'gitattributes',
@@ -92,7 +96,7 @@ module.exports = function(app) {
    * @api public
    */
 
-  app.task('rootfiles', [
+  task(app, 'rootfiles', null, [
     'contributing',
     'mit',
     'package',
@@ -106,14 +110,14 @@ module.exports = function(app) {
    *
    * ```sh
    * $ gen project
-   * # also aliased as
+   * # or
    * $ gen project:project
    * ```
    * @name project
    * @api public
    */
 
-  app.task('project', ['dotfiles', 'index', 'rootfiles']);
+  task(app, 'project', null, ['dotfiles', 'index', 'rootfiles']);
 
   /**
    * Scaffold out basic project for a [gulp][] plugin.
@@ -125,12 +129,12 @@ module.exports = function(app) {
    * @api public
    */
 
-  app.task('gulp', ['dotfiles', 'gp', 'gf', 'rootfiles']);
-  task(app, 'gf', 'gulp/gulpfile.js');
-  task(app, 'gp', 'gulp/plugin.js');
+  task(app, 'gulp', null, ['dotfiles', 'gulp-plugin', 'gulp-file', 'rootfiles']);
+  task(app, 'gulp-file', 'gulp/gulpfile.js');
+  task(app, 'gulp-plugin', 'gulp/plugin.js');
 
   /**
-   * Scaffold out a [base][] plugin project.
+   * Scaffold out a project for a [base][] plugin.
    *
    * ```sh
    * $ gen project:base
@@ -139,7 +143,7 @@ module.exports = function(app) {
    * @api public
    */
 
-  app.task('base', ['dotfiles', 'base-index', 'rootfiles']);
+  task(app, 'base', null, ['dotfiles', 'base-index', 'rootfiles']);
   task(app, 'base-index', 'base/plugin.js');
 
   /**
@@ -147,15 +151,15 @@ module.exports = function(app) {
    *
    * ```sh
    * $ gen project:min
-   * # also aliased as
+   * # or
    * $ gen project:minimal
    * ```
    * @name minimal
    * @api public
    */
 
-  app.task('min', ['minimal']);
-  app.task('minimal', ['gitignore', 'mit', 'package', 'readme']);
+  task(app, 'min', null, ['minimal']);
+  task(app, 'minimal', null, ['gitignore', 'mit', 'package', 'readme']);
 
   /**
    * Scaffold out a basic [generate][] generator project.
@@ -167,8 +171,8 @@ module.exports = function(app) {
    * @api public
    */
 
-  app.task('gen', ['generator']);
-  app.task('generator', ['dotfiles', 'generator-files', 'rootfiles']);
+  task(app, 'gen', null, ['generator']);
+  task(app, 'generator', null, ['dotfiles', 'generator-files', 'rootfiles']);
   task(app, 'generator-files', 'generator/*.js');
 
   /**
@@ -184,47 +188,12 @@ module.exports = function(app) {
   task(app, 'helper', 'helper/*.js', ['files']);
 
   /**
-   * Generate an `index.js` file. This task is used for composition with other tasks.
-   *
-   * ```sh
-   * $ gen project:index
-   * ```
-   * @name index
-   * @api public
-   */
-
-  task(app, 'index', 'index.js');
-
-  /**
-   * Generate a basic node.js project, then prompt to install dependencies
-   * after files are written to the file system.
-   *
-   * ```sh
-   * $ gen project
-   * ```
-   * @name default
-   * @api public
-   */
-
-  app.task('default', ['project']);
-
-  /**
    * Generate project trees
    */
 
-  app.task('tree-default', ['default'], createTree(app));
-  app.task('tree-dotfiles', ['dotfiles'], createTree(app));
-  app.task('tree-generator', ['generator'], createTree(app));
-  app.task('tree-gulp', ['gulp'], createTree(app));
-  app.task('tree-min', ['min'], createTree(app));
-  app.task('tree-minimal', ['minimal'], createTree(app));
-  app.task('tree-project', ['project'], createTree(app));
-  app.task('tree-rootfiles', ['rootfiles'], createTree(app));
-  app.task('trees', ['tree-*', 'compare-trees']);
-  app.task('compare-trees', function(cb) {
-    compare(app.trees.views);
-    // console.log();
-    cb();
+  app.task('trees', function(cb) {
+    app.enable('silent');
+    app.build('tree-*', cb);
   });
 }
 
@@ -233,7 +202,13 @@ module.exports = function(app) {
  */
 
 function task(app, name, pattern, dependencies) {
+  // add a `tree-*` task for all matching tasks (need a better way of doing this)
+  if (!/-/.test(name) && !/^(gen|min)$/.test(name)) {
+    app.task(`tree-${name}`, [name], createTree(app));
+  }
+
   app.task(name, dependencies || [], function(cb) {
+    if (!pattern) return cb();
     return file(app, pattern);
   });
 }
@@ -251,6 +226,7 @@ function createTree(app) {
     var dest = app.options.trees || path.join(app.cwd, 'trees');
     var name = this.name.replace(/^tree-/, '');
     app.createTrees({name: name, dest: dest});
+    app.log.time('creating tree for', app.log.green(name));
     cb();
   }
 }
