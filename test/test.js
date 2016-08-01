@@ -1,5 +1,6 @@
 'use strict';
 
+var isTravis = process.env.CI || process.env.TRAVIS;
 require('mocha');
 var fs = require('fs');
 var path = require('path');
@@ -127,64 +128,17 @@ describe('generate-project', function() {
     });
   });
 
-  describe('trees', function() {
-    beforeEach(function() {
-      app.cwd = actual();
+  describe('generator (CLI)', function() {
+    it('should run the default task using the `generate-project` name', function(cb) {
+      if (isTravis) return this.skip();
+      app.generate('generate-project', exists('package.json', cb));
     });
 
-    it('should generate trees for all of the tasks', function(cb) {
-      app.enable('overwrite');
-      app.register('project', generator);
-      app.generate('project:trees', cb);
-    });
-
-    it('should generate a tree for the default task', function(cb) {
-      app.register('project', generator);
-      app.generate('project:tree-default', exists('../trees/default-dest.txt', cb));
-    });
-
-    it('should generate a tree for the dotfiles task', function(cb) {
-      app.register('project', generator);
-      app.generate('project:tree-dotfiles', exists('../trees/dotfiles-dest.txt', cb));
-    });
-
-    it('should generate a tree for the generator task', function(cb) {
-      app.register('project', generator);
-      app.generate('project:tree-generator', exists('../trees/generator-dest.txt', cb));
-    });
-
-    it('should generate a tree for the gulp task', function(cb) {
-      app.register('project', generator);
-      app.generate('project:tree-gulp', exists('../trees/gulp-dest.txt', cb));
-    });
-
-    it('should generate a tree for the minimal task', function(cb) {
-      app.register('project', generator);
-      app.generate('project:tree-minimal', exists('../trees/minimal-dest.txt', cb));
-    });
-
-    it('should generate a tree for the project task', function(cb) {
-      app.register('project', generator);
-      app.generate('project:tree-project', exists('../trees/project-dest.txt', cb));
-    });
-
-    it('should generate a tree for the rootfiles task', function(cb) {
-      app.register('project', generator);
-      app.generate('project:tree-rootfiles', exists('../trees/rootfiles-dest.txt', cb));
+    it('should run the default task using the `project` generator alias', function(cb) {
+      if (isTravis) return this.skip();
+      app.generate('project', exists('package.json', cb));
     });
   });
-
-  if (!process.env.CI && !process.env.TRAVIS) {
-    describe('generator (CLI)', function() {
-      it('should run the default task using the `generate-project` name', function(cb) {
-        app.generate('generate-project', exists('package.json', cb));
-      });
-
-      it('should run the default task using the `project` generator alias', function(cb) {
-        app.generate('project', exists('package.json', cb));
-      });
-    });
-  }
 
   describe('generator (API)', function() {
     it('should run the default task on the generator', function(cb) {
