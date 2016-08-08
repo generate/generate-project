@@ -25,14 +25,14 @@
   },
   "dependencies": {
     "generate-contributing": "^0.1.3",
-    "generate-defaults": "^0.4.2",
-    "generate-editorconfig": "^0.1.8",
+    "generate-defaults": "^0.5.0",
+    "generate-editorconfig": "^0.1.9",
     "generate-eslint": "^0.2.1",
     "generate-gitattributes": "^0.1.1",
     "generate-gitignore": "^0.1.2",
-    "generate-install": "^0.1.7",
+    "generate-install": "^0.1.8",
     "generate-license": "^0.3.5",
-    "generate-package": "^0.4.3",
+    "generate-package": "^0.4.4",
     "generate-readme": "^0.2.1",
     "generate-travis": "^0.2.0",
     "is-valid-app": "^0.2.0"
