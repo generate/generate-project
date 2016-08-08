@@ -41,7 +41,7 @@ module.exports = function(app) {
   app.task('project', ['dotfiles', 'index', 'rootfiles']);
 
   /**
-   * Runs the `default` task on all registered micro-generators.
+   * Runs the `default` task on all registered micro-generators. See the [generated files](#files-1).
    *
    * ```sh
    * $ gen project:files
@@ -65,7 +65,7 @@ module.exports = function(app) {
   task(app, 'index', 'index.js');
 
   /**
-   * Generate the dotfiles from registered micro-generators .
+   * Generate the dotfiles from registered micro-generators. See the [generated files](#dotfiles-1).
    *
    * ```sh
    * $ gen project:dotfiles
@@ -76,15 +76,15 @@ module.exports = function(app) {
 
   app.task('dotfiles', [
     'editorconfig',
-    'eslintrc',
     'gitattributes',
     'gitignore',
+    'eslintrc',
     'travis'
   ]);
 
   /**
-   * Generate the main project files from registered micro-generators: `contributing.md`,
-   * `LICENSE`, 'package.json' and `README.md`.
+   * Generate the main project files from registered micro-generators. See
+   * the [generated files](#rootfiles-1).
    *
    * ```sh
    * $ gen project:rootfiles
@@ -101,7 +101,7 @@ module.exports = function(app) {
   ]);
 
   /**
-   * Scaffold out basic project for a [gulp][] plugin.
+   * Scaffold out basic project for a [gulp][] plugin. See the [generated files](#gulp-1).
    *
    * ```sh
    * $ gen project:gulp
@@ -115,7 +115,7 @@ module.exports = function(app) {
   task(app, 'gulp-plugin', 'gulp/plugin.js');
 
   /**
-   * Scaffold out a project for a [base][] plugin.
+   * Scaffold out a project for a [base][] plugin. See the [generated files](#base-1).
    *
    * ```sh
    * $ gen project:base
@@ -128,7 +128,7 @@ module.exports = function(app) {
   task(app, 'base-index', 'base/plugin.js');
 
   /**
-   * Scaffold out a minimal code project,
+   * Scaffold out a minimal code project. See the [generated files](#minimal-1).
    *
    * ```sh
    * $ gen project:min
@@ -167,6 +167,19 @@ module.exports = function(app) {
    */
 
   task(app, 'helper', 'helper/*.js', ['files']);
+
+  /**
+   * Scaffold out an [assemble][] middleware project.
+   *
+   * ```sh
+   * $ gen project:middleware
+   * ```
+   * @name middleware
+   * @api public
+   */
+
+  task(app, 'middleware-index', 'middleware/index.js');
+  app.task('middleware', ['dotfiles', 'middleware-index', 'rootfiles']);
 };
 
 /**
