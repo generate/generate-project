@@ -31,6 +31,7 @@ Scaffold out complete code projects from the command line, or use this generator
   * [minimal](#minimal)
   * [generator](#generator)
   * [helper](#helper)
+  * [middleware](#middleware)
 - [Trees](#trees)
   * [Generated files](#generated-files)
   * [Source files](#source-files)
@@ -139,7 +140,7 @@ $ gen project
 
 ### [files](generator.js#L53)
 
-Runs the `default` task on all registered micro-generators.
+Runs the `default` task on all registered micro-generators. See the [generated files](#files-1).
 
 **Example**
 
@@ -159,7 +160,7 @@ $ gen project:index
 
 ### [dotfiles](generator.js#L77)
 
-Generate the dotfiles from registered micro-generators .
+Generate the dotfiles from registered micro-generators. See the [generated files](#dotfiles-1).
 
 **Example**
 
@@ -169,7 +170,7 @@ $ gen project:dotfiles
 
 ### [rootfiles](generator.js#L96)
 
-Generate the main project files from registered micro-generators: `contributing.md`, `LICENSE`, 'package.json' and `README.md`.
+Generate the main project files from registered micro-generators. See the [generated files](#rootfiles-1).
 
 **Example**
 
@@ -179,7 +180,7 @@ $ gen project:rootfiles
 
 ### [gulp](generator.js#L113)
 
-Scaffold out basic project for a [gulp](http://gulpjs.com) plugin.
+Scaffold out basic project for a [gulp](http://gulpjs.com) plugin. See the [generated files](#gulp-1).
 
 **Example**
 
@@ -189,7 +190,7 @@ $ gen project:gulp
 
 ### [base](generator.js#L127)
 
-Scaffold out a project for a [base](https://github.com/node-base/base) plugin.
+Scaffold out a project for a [base](https://github.com/node-base/base) plugin. See the [generated files](#base-1).
 
 **Example**
 
@@ -199,7 +200,7 @@ $ gen project:base
 
 ### [minimal](generator.js#L142)
 
-Scaffold out a minimal code project,
+Scaffold out a minimal code project. See the [generated files](#minimal-1).
 
 **Example**
 
@@ -227,6 +228,16 @@ Scaffold out a basic template helper project.
 
 ```sh
 $ gen project:helper
+```
+
+### [middleware](generator.js#L181)
+
+Scaffold out an [assemble](https://github.com/assemble/assemble) middleware project.
+
+**Example**
+
+```sh
+$ gen project:middleware
 ```
 
 Visit Generate's [documentation for tasks](https://github.com/generate/generate/blob/master/docs/tasks.md).
@@ -434,26 +445,26 @@ The following trees represent the source files or templates that are used by eac
 
 #### default
 
-Source files used by the [default task](#default):
+Source files and/or libraries used by the [default task](#default):
 
 ```diff
  .
  ├─┬ node_modules
  │ ├─┬ generate-editorconfig
  │ │ └─┬ templates
- │ │   └── .editorconfig
+ │ │   └── _editorconfig
  │ ├─┬ generate-eslint
  │ │ └─┬ templates
- │ │   └── .eslintrc.json
+ │ │   └── _eslintrc.json
  │ ├─┬ generate-gitattributes
  │ │ └─┬ templates
- │ │   └── .gitattributes
+ │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── .gitignore
+ │ │   └── _gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
- │ │   └── .travis.yml
+ │ │   └── _travis.yml
  │ ├─┬ generate-contributing
  │ │ └─┬ templates
  │ │   └── contributing.md
@@ -462,7 +473,7 @@ Source files used by the [default task](#default):
  │ │   └── mit.tmpl
  │ ├─┬ generate-package
  │ │ └─┬ templates
- │ │   └── package.json
+ │ │   └── $package.json
  │ └─┬ generate-readme
  │   └─┬ templates
  │     └── node.md
@@ -472,20 +483,20 @@ Source files used by the [default task](#default):
 
 #### minimal
 
-Source files used by the [minimal task](#minimal):
+Source files and/or libraries used by the [minimal task](#minimal):
 
 ```diff
  .
  └─┬ node_modules
    ├─┬ generate-gitignore
    │ └─┬ templates
-   │   └── .gitignore
+   │   └── _gitignore
    ├─┬ generate-license
    │ └─┬ templates
    │   └── mit.tmpl
    ├─┬ generate-package
    │ └─┬ templates
-   │   └── package.json
+   │   └── $package.json
    └─┬ generate-readme
      └─┬ templates
        └── node.md
@@ -493,26 +504,26 @@ Source files used by the [minimal task](#minimal):
 
 #### gulp
 
-Source files used by the [gulp task](#gulp):
+Source files and/or libraries used by the [gulp task](#gulp):
 
 ```diff
  .
  ├─┬ node_modules
  │ ├─┬ generate-editorconfig
  │ │ └─┬ templates
- │ │   └── .editorconfig
+ │ │   └── _editorconfig
  │ ├─┬ generate-eslint
  │ │ └─┬ templates
- │ │   └── .eslintrc.json
+ │ │   └── _eslintrc.json
  │ ├─┬ generate-gitattributes
  │ │ └─┬ templates
- │ │   └── .gitattributes
+ │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── .gitignore
+ │ │   └── _gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
- │ │   └── .travis.yml
+ │ │   └── _travis.yml
  │ ├─┬ generate-contributing
  │ │ └─┬ templates
  │ │   └── contributing.md
@@ -521,7 +532,7 @@ Source files used by the [gulp task](#gulp):
  │ │   └── mit.tmpl
  │ ├─┬ generate-package
  │ │ └─┬ templates
- │ │   └── package.json
+ │ │   └── $package.json
  │ └─┬ generate-readme
  │   └─┬ templates
  │     └── node.md
@@ -533,26 +544,26 @@ Source files used by the [gulp task](#gulp):
 
 #### base
 
-Source files used by the [base task](#base):
+Source files and/or libraries used by the [base task](#base):
 
 ```diff
  .
  ├─┬ node_modules
  │ ├─┬ generate-editorconfig
  │ │ └─┬ templates
- │ │   └── .editorconfig
+ │ │   └── _editorconfig
  │ ├─┬ generate-eslint
  │ │ └─┬ templates
- │ │   └── .eslintrc.json
+ │ │   └── _eslintrc.json
  │ ├─┬ generate-gitattributes
  │ │ └─┬ templates
- │ │   └── .gitattributes
+ │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── .gitignore
+ │ │   └── _gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
- │ │   └── .travis.yml
+ │ │   └── _travis.yml
  │ ├─┬ generate-contributing
  │ │ └─┬ templates
  │ │   └── contributing.md
@@ -561,7 +572,7 @@ Source files used by the [base task](#base):
  │ │   └── mit.tmpl
  │ ├─┬ generate-package
  │ │ └─┬ templates
- │ │   └── package.json
+ │ │   └── $package.json
  │ └─┬ generate-readme
  │   └─┬ templates
  │     └── node.md
@@ -572,26 +583,26 @@ Source files used by the [base task](#base):
 
 #### generator
 
-Source files used by the [generator task](#generator):
+Source files and/or libraries used by the [generator task](#generator):
 
 ```diff
  .
  ├─┬ node_modules
  │ ├─┬ generate-editorconfig
  │ │ └─┬ templates
- │ │   └── .editorconfig
+ │ │   └── _editorconfig
  │ ├─┬ generate-eslint
  │ │ └─┬ templates
- │ │   └── .eslintrc.json
+ │ │   └── _eslintrc.json
  │ ├─┬ generate-gitattributes
  │ │ └─┬ templates
- │ │   └── .gitattributes
+ │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── .gitignore
+ │ │   └── _gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
- │ │   └── .travis.yml
+ │ │   └── _travis.yml
  │ ├─┬ generate-contributing
  │ │ └─┬ templates
  │ │   └── contributing.md
@@ -600,7 +611,7 @@ Source files used by the [generator task](#generator):
  │ │   └── mit.tmpl
  │ ├─┬ generate-package
  │ │ └─┬ templates
- │ │   └── package.json
+ │ │   └── $package.json
  │ └─┬ generate-readme
  │   └─┬ templates
  │     └── node.md
@@ -611,26 +622,26 @@ Source files used by the [generator task](#generator):
 
 #### helper
 
-Source files used by the [helper task](#helper):
+Source files and/or libraries used by the [helper task](#helper):
 
 ```diff
  .
  ├─┬ node_modules
  │ ├─┬ generate-editorconfig
  │ │ └─┬ templates
- │ │   └── .editorconfig
+ │ │   └── _editorconfig
  │ ├─┬ generate-eslint
  │ │ └─┬ templates
- │ │   └── .eslintrc.json
+ │ │   └── _eslintrc.json
  │ ├─┬ generate-gitattributes
  │ │ └─┬ templates
- │ │   └── .gitattributes
+ │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── .gitignore
+ │ │   └── _gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
- │ │   └── .travis.yml
+ │ │   └── _travis.yml
  │ ├─┬ generate-contributing
  │ │ └─┬ templates
  │ │   └── contributing.md
@@ -639,7 +650,7 @@ Source files used by the [helper task](#helper):
  │ │   └── mit.tmpl
  │ ├─┬ generate-package
  │ │ └─┬ templates
- │ │   └── package.json
+ │ │   └── $package.json
  │ └─┬ generate-readme
  │   └─┬ templates
  │     └── node.md
@@ -650,26 +661,26 @@ Source files used by the [helper task](#helper):
 
 #### files
 
-Source files used by the [files task](#files):
+Source files and/or libraries used by the [files task](#files):
 
 ```diff
  .
  └─┬ node_modules
    ├─┬ generate-editorconfig
    │ └─┬ templates
-   │   └── .editorconfig
+   │   └── _editorconfig
    ├─┬ generate-eslint
    │ └─┬ templates
-   │   └── .eslintrc.json
+   │   └── _eslintrc.json
    ├─┬ generate-gitattributes
    │ └─┬ templates
-   │   └── .gitattributes
+   │   └── _gitattributes
    ├─┬ generate-gitignore
    │ └─┬ templates
-   │   └── .gitignore
+   │   └── _gitignore
    ├─┬ generate-travis
    │ └─┬ templates
-   │   └── .travis.yml
+   │   └── _travis.yml
    ├─┬ generate-contributing
    │ └─┬ templates
    │   └── contributing.md
@@ -678,7 +689,7 @@ Source files used by the [files task](#files):
    │   └── mit.tmpl
    ├─┬ generate-package
    │ └─┬ templates
-   │   └── package.json
+   │   └── $package.json
    └─┬ generate-readme
      └─┬ templates
        └── node.md
@@ -686,7 +697,7 @@ Source files used by the [files task](#files):
 
 #### rootfiles
 
-Source files used by the [rootfiles task](#rootfiles):
+Source files and/or libraries used by the [rootfiles task](#rootfiles):
 
 ```diff
  .
@@ -699,7 +710,7 @@ Source files used by the [rootfiles task](#rootfiles):
    │   └── mit.tmpl
    ├─┬ generate-package
    │ └─┬ templates
-   │   └── package.json
+   │   └── $package.json
    └─┬ generate-readme
      └─┬ templates
        └── node.md
@@ -707,31 +718,31 @@ Source files used by the [rootfiles task](#rootfiles):
 
 #### dotfiles
 
-Source files used by the [dotfiles task](#dotfiles):
+Source files and/or libraries used by the [dotfiles task](#dotfiles):
 
 ```diff
  .
  └─┬ node_modules
    ├─┬ generate-editorconfig
    │ └─┬ templates
-   │   └── .editorconfig
+   │   └── _editorconfig
    ├─┬ generate-eslint
    │ └─┬ templates
-   │   └── .eslintrc.json
+   │   └── _eslintrc.json
    ├─┬ generate-gitattributes
    │ └─┬ templates
-   │   └── .gitattributes
+   │   └── _gitattributes
    ├─┬ generate-gitignore
    │ └─┬ templates
-   │   └── .gitignore
+   │   └── _gitignore
    └─┬ generate-travis
      └─┬ templates
-       └── .travis.yml
+       └── _travis.yml
 ```
 
 #### index
 
-Source files used by the [index task](#index):
+Source files and/or libraries used by the [index task](#index):
 
 ```diff
  .
@@ -807,4 +818,4 @@ Released under the [MIT license](https://github.com/generate/generate-project/bl
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.1.28, on July 31, 2016._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.1.30, on August 09, 2016._

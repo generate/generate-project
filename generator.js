@@ -76,9 +76,9 @@ module.exports = function(app) {
 
   app.task('dotfiles', [
     'editorconfig',
+    'eslintrc',
     'gitattributes',
     'gitignore',
-    'eslintrc',
     'travis'
   ]);
 
