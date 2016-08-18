@@ -24,26 +24,27 @@
     "test": "mocha"
   },
   "dependencies": {
-    "generate-contributing": "^0.1.4",
-    "generate-defaults": "^0.5.0",
-    "generate-editorconfig": "^0.1.9",
+    "generate-contributing": "^0.2.0",
+    "generate-defaults": "^0.6.0",
+    "generate-editorconfig": "^0.2.1",
     "generate-eslint": "^0.2.1",
-    "generate-gitattributes": "^0.1.1",
-    "generate-gitignore": "^0.1.2",
-    "generate-install": "^0.1.9",
-    "generate-license": "^0.3.6",
-    "generate-package": "^0.4.5",
-    "generate-readme": "^0.2.2",
+    "generate-gitattributes": "^0.1.2",
+    "generate-gitignore": "^0.2.5",
+    "generate-install": "^0.2.0",
+    "generate-license": "^0.5.0",
+    "generate-package": "^0.6.0",
+    "generate-readme": "^0.3.0",
     "generate-travis": "^0.2.0",
     "is-valid-app": "^0.2.0"
   },
   "devDependencies": {
     "delete": "^0.3.2",
-    "generate": "^0.9.8",
+    "generate": "^0.11.2",
     "gulp-format-md": "^0.1.10",
     "mocha": "^3.0.2",
     "npm-install-global": "^0.1.2",
     "verb-generate-readme": "^0.1.30",
+    "verb-repo-data": "^0.1.11",
     "verb-trees": "^0.1.0"
   },
   "keywords": [
