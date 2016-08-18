@@ -134,7 +134,7 @@ describe('generate-project', function() {
     it('should run the default task using the `generate-project` name', function(cb) {
       if (isTravis) {
         this.skip();
-        return cb();
+        return;
       }
       app.generate('generate-project', exists('package.json', cb));
     });
@@ -142,7 +142,7 @@ describe('generate-project', function() {
     it('should run the default task using the `project` generator alias', function(cb) {
       if (isTravis) {
         this.skip();
-        return cb();
+        return;
       }
       app.generate('project', exists('package.json', cb));
     });
