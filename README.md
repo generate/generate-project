@@ -21,18 +21,20 @@ Scaffold out complete code projects from the command line, or use this generator
   * [Usage](#usage)
   * [Help](#help)
 - [Tasks](#tasks)
-  * [default](#default)
-  * [files](#files)
-  * [index](#index)
-  * [dotfiles](#dotfiles)
-  * [rootfiles](#rootfiles)
-  * [gulp](#gulp)
-  * [base](#base)
-  * [minimal](#minimal)
-  * [generator](#generator)
-  * [helper](#helper)
-  * [middleware](#middleware)
-- [Trees](#trees)
+  * [project](#project)
+  * [project:prompt](#projectprompt)
+  * [project:is-empty](#projectis-empty)
+  * [project:files](#projectfiles)
+  * [project:index](#projectindex)
+  * [project:dotfiles](#projectdotfiles)
+  * [project:rootfiles](#projectrootfiles)
+  * [project:gulp](#projectgulp)
+  * [project:base](#projectbase)
+  * [project:minimal](#projectminimal)
+  * [project:generator](#projectgenerator)
+  * [project:helper](#projecthelper)
+  * [project:middleware](#projectmiddleware)
+- [Files trees](#files-trees)
   * [Generated files](#generated-files)
   * [Source files](#source-files)
 - [Next steps](#next-steps)
@@ -128,7 +130,7 @@ $ gen help
 
 All available tasks.
 
-### [default](generator.js#L40)
+### [project](generator.js#L40)
 
 Generates the [necessary files](#default-1) for a basic node.js project.
 
@@ -138,7 +140,27 @@ Generates the [necessary files](#default-1) for a basic node.js project.
 $ gen project
 ```
 
-### [files](generator.js#L53)
+### [project:prompt](generator.js#L55)
+
+Prompts for commonly used data. This task isn't necessary needed, it's more of a convenience for asking questions up front, instead of as files are generated. The actual messages for questions can be found in the [common-questions](https://github.com/generate/common-questions) library.
+
+**Example**
+
+```sh
+$ gen project:prompt
+```
+
+### [project:is-empty](generator.js#L81)
+
+Verify that the current working directory is empty before generating any files. This task is automatically run by the `default` task, but you'll need to call it directly with any other task.
+
+**Example**
+
+```sh
+$ gen project:is-empty
+```
+
+### [project:files](generator.js#L96)
 
 Runs the `default` task on all registered micro-generators. See the [generated files](#files-1).
 
@@ -148,7 +170,7 @@ Runs the `default` task on all registered micro-generators. See the [generated f
 $ gen project:files
 ```
 
-### [index](generator.js#L65)
+### [project:index](generator.js#L108)
 
 Generate a basic `index.js` file. This task is used for composition with other tasks.
 
@@ -158,7 +180,7 @@ Generate a basic `index.js` file. This task is used for composition with other t
 $ gen project:index
 ```
 
-### [dotfiles](generator.js#L77)
+### [project:dotfiles](generator.js#L120)
 
 Generate the dotfiles from registered micro-generators. See the [generated files](#dotfiles-1).
 
@@ -168,7 +190,7 @@ Generate the dotfiles from registered micro-generators. See the [generated files
 $ gen project:dotfiles
 ```
 
-### [rootfiles](generator.js#L96)
+### [project:rootfiles](generator.js#L139)
 
 Generate the main project files from registered micro-generators. See the [generated files](#rootfiles-1).
 
@@ -178,7 +200,7 @@ Generate the main project files from registered micro-generators. See the [gener
 $ gen project:rootfiles
 ```
 
-### [gulp](generator.js#L113)
+### [project:gulp](generator.js#L156)
 
 Scaffold out basic project for a [gulp](http://gulpjs.com) plugin. See the [generated files](#gulp-1).
 
@@ -188,7 +210,7 @@ Scaffold out basic project for a [gulp](http://gulpjs.com) plugin. See the [gene
 $ gen project:gulp
 ```
 
-### [base](generator.js#L127)
+### [project:base](generator.js#L170)
 
 Scaffold out a project for a [base](https://github.com/node-base/base) plugin. See the [generated files](#base-1).
 
@@ -198,7 +220,7 @@ Scaffold out a project for a [base](https://github.com/node-base/base) plugin. S
 $ gen project:base
 ```
 
-### [minimal](generator.js#L142)
+### [project:minimal](generator.js#L185)
 
 Scaffold out a minimal code project. See the [generated files](#minimal-1).
 
@@ -210,7 +232,7 @@ $ gen project:min
 $ gen project:minimal
 ```
 
-### [generator](generator.js#L155)
+### [project:generator](generator.js#L198)
 
 Scaffold out a basic [generate](https://github.com/generate/generate) generator project.
 
@@ -220,7 +242,7 @@ Scaffold out a basic [generate](https://github.com/generate/generate) generator 
 $ gen project:generator
 ```
 
-### [helper](generator.js#L169)
+### [project:helper](generator.js#L212)
 
 Scaffold out a basic template helper project.
 
@@ -230,7 +252,7 @@ Scaffold out a basic template helper project.
 $ gen project:helper
 ```
 
-### [middleware](generator.js#L181)
+### [project:middleware](generator.js#L224)
 
 Scaffold out an [assemble](https://github.com/assemble/assemble) middleware project.
 
@@ -242,7 +264,7 @@ $ gen project:middleware
 
 Visit Generate's [documentation for tasks](https://github.com/generate/generate/blob/master/docs/tasks.md).
 
-## Trees
+## Files trees
 
 The following files trees are automatically generated by a task in [verbfile.js](verbfile.js).
 
@@ -461,7 +483,7 @@ Source files and/or libraries used by the [default task](#default):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -490,7 +512,7 @@ Source files and/or libraries used by the [minimal task](#minimal):
  └─┬ node_modules
    ├─┬ generate-gitignore
    │ └─┬ templates
-   │   └── _gitignore
+   │   └── Node.gitignore
    ├─┬ generate-license
    │ └─┬ templates
    │   └── mit.tmpl
@@ -520,7 +542,7 @@ Source files and/or libraries used by the [gulp task](#gulp):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -560,7 +582,7 @@ Source files and/or libraries used by the [base task](#base):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -599,7 +621,7 @@ Source files and/or libraries used by the [generator task](#generator):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -638,7 +660,7 @@ Source files and/or libraries used by the [helper task](#helper):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -677,7 +699,7 @@ Source files and/or libraries used by the [files task](#files):
    │   └── _gitattributes
    ├─┬ generate-gitignore
    │ └─┬ templates
-   │   └── _gitignore
+   │   └── Minimal.gitignore
    ├─┬ generate-travis
    │ └─┬ templates
    │   └── _travis.yml
@@ -734,7 +756,7 @@ Source files and/or libraries used by the [dotfiles task](#dotfiles):
    │   └── _gitattributes
    ├─┬ generate-gitignore
    │ └─┬ templates
-   │   └── _gitignore
+   │   └── Minimal.gitignore
    └─┬ generate-travis
      └─┬ templates
        └── _travis.yml
@@ -776,7 +798,7 @@ $ npm publish
 
 * [generate-dest](https://www.npmjs.com/package/generate-dest): Prompts the user for the destination directory to use. Can be used from the command… [more](https://github.com/generate/generate-dest) | [homepage](https://github.com/generate/generate-dest "Prompts the user for the destination directory to use. Can be used from the command line when installed globally, or as plugin or sub-generator in your generator.")
 * [generate-install](https://www.npmjs.com/package/generate-install): Generator that automatically detects the dependencies or devDependencies to install based on the templates or… [more](https://github.com/generate/generate-install) | [homepage](https://github.com/generate/generate-install "Generator that automatically detects the dependencies or devDependencies to install based on the templates or includes that are dynamically used by your generator. This can be used as a sub-generator or plugin in your own generator.")
-* [generate-package](https://www.npmjs.com/package/generate-package): Generate] a package.json from a pre-defined or user-defined template. This generator can be used from… [more](https://github.com/generate/generate-package) | [homepage](https://github.com/generate/generate-package "[Generate] a package.json from a pre-defined or user-defined template. This generator can be used from the command line when globally installed, or as a plugin or sub-generator in your own generator.")
+* [generate-package](https://www.npmjs.com/package/generate-package): Generate a package.json from a pre-defined or user-defined template. This generator can be used from… [more](https://github.com/generate/generate-package) | [homepage](https://github.com/generate/generate-package "Generate a package.json from a pre-defined or user-defined template. This generator can be used from the command line when globally installed, or as a plugin or sub-generator in your own generator.")
 
 ### Community
 
@@ -818,4 +840,4 @@ Released under the [MIT license](https://github.com/generate/generate-project/bl
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.1.30, on August 09, 2016._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.1.30, on August 17, 2016._
