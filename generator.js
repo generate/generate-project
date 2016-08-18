@@ -14,7 +14,7 @@ module.exports = function(app) {
   app.use(require('generate-install'));
 
   /**
-   * Micro-generator plugins
+   * Micro-generators (as plugins)
    */
 
   app.use(require('generate-contributing'));
@@ -33,12 +33,55 @@ module.exports = function(app) {
    * ```sh
    * $ gen project
    * ```
-   * @name default
+   * @name project
    * @api public
    */
 
   app.task('default', ['project']);
-  app.task('project', ['dotfiles', 'index', 'rootfiles']);
+  app.task('project', ['is-empty', 'prompt', 'dotfiles', 'index', 'rootfiles']);
+
+  /**
+   * Prompts for commonly used data. This task isn't necessary needed, it's more of a convenience
+   * for asking questions up front, instead of as files are generated. The actual messages for
+   * questions can be found in the [common-questions][] library.
+   *
+   * ```sh
+   * $ gen project:prompt
+   * ```
+   * @name project:prompt
+   * @api public
+   */
+
+  app.task('prompt', function(cb) {
+    if (app.options.prompt === false) return cb();
+    app.question('homepage', 'Project homepage?');
+    app.ask([
+      'name',
+      'description',
+      'owner',
+      'homepage',
+      'author.name',
+      'author.username',
+      'author.url'
+    ], cb);
+  });
+
+  /**
+   * Verify that the current working directory is empty before generating any files.
+   * This task is automatically run by the `default` task, but you'll need to call it
+   * directly with any other task.
+   *
+   * ```sh
+   * $ gen project:is-empty
+   * ```
+   * @name project:is-empty
+   * @api public
+   */
+
+  app.task('is-empty', function(cb) {
+    if (app.option('check-directory') === false) return cb();
+    app.build('check-directory', cb);
+  });
 
   /**
    * Runs the `default` task on all registered micro-generators. See the [generated files](#files-1).
@@ -46,7 +89,7 @@ module.exports = function(app) {
    * ```sh
    * $ gen project:files
    * ```
-   * @name files
+   * @name project:files
    * @api public
    */
 
@@ -58,7 +101,7 @@ module.exports = function(app) {
    * ```sh
    * $ gen project:index
    * ```
-   * @name index
+   * @name project:index
    * @api public
    */
 
@@ -70,7 +113,7 @@ module.exports = function(app) {
    * ```sh
    * $ gen project:dotfiles
    * ```
-   * @name dotfiles
+   * @name project:dotfiles
    * @api public
    */
 
@@ -78,7 +121,7 @@ module.exports = function(app) {
     'editorconfig',
     'eslintrc',
     'gitattributes',
-    'gitignore',
+    'gitignore-minimal',
     'travis'
   ]);
 
@@ -89,13 +132,13 @@ module.exports = function(app) {
    * ```sh
    * $ gen project:rootfiles
    * ```
-   * @name rootfiles
+   * @name project:rootfiles
    * @api public
    */
 
   app.task('rootfiles', [
     'contributing',
-    'mit',
+    'license-mit',
     'package',
     'readme'
   ]);
@@ -106,11 +149,11 @@ module.exports = function(app) {
    * ```sh
    * $ gen project:gulp
    * ```
-   * @name gulp
+   * @name project:gulp
    * @api public
    */
 
-  app.task('gulp', ['dotfiles', 'gulp-plugin', 'gulp-file', 'rootfiles']);
+  app.task('gulp', ['prompt', 'dotfiles', 'gulp-plugin', 'gulp-file', 'rootfiles']);
   task(app, 'gulp-file', 'gulp/gulpfile.js');
   task(app, 'gulp-plugin', 'gulp/plugin.js');
 
@@ -120,11 +163,11 @@ module.exports = function(app) {
    * ```sh
    * $ gen project:base
    * ```
-   * @name base
+   * @name project:base
    * @api public
    */
 
-  app.task('base', ['dotfiles', 'base-index', 'rootfiles']);
+  app.task('base', ['prompt', 'dotfiles', 'base-index', 'rootfiles']);
   task(app, 'base-index', 'base/plugin.js');
 
   /**
@@ -135,12 +178,12 @@ module.exports = function(app) {
    * # or
    * $ gen project:minimal
    * ```
-   * @name minimal
+   * @name project:minimal
    * @api public
    */
 
   app.task('min', ['minimal']);
-  app.task('minimal', ['gitignore', 'mit', 'package', 'readme']);
+  app.task('minimal', ['prompt', 'gitignore-node', 'license-mit', 'package', 'readme']);
 
   /**
    * Scaffold out a basic [generate][] generator project.
@@ -148,12 +191,12 @@ module.exports = function(app) {
    * ```sh
    * $ gen project:generator
    * ```
-   * @name generator
+   * @name project:generator
    * @api public
    */
 
   app.task('gen', ['generator']);
-  app.task('generator', ['dotfiles', 'generator-files', 'rootfiles']);
+  app.task('generator', ['prompt', 'dotfiles', 'generator-files', 'rootfiles']);
   task(app, 'generator-files', 'generator/*.js');
 
   /**
@@ -162,7 +205,7 @@ module.exports = function(app) {
    * ```sh
    * $ gen project:helper
    * ```
-   * @name helper
+   * @name project:helper
    * @api public
    */
 
@@ -174,12 +217,12 @@ module.exports = function(app) {
    * ```sh
    * $ gen project:middleware
    * ```
-   * @name middleware
+   * @name project:middleware
    * @api public
    */
 
   task(app, 'middleware-index', 'middleware/index.js');
-  app.task('middleware', ['dotfiles', 'middleware-index', 'rootfiles']);
+  app.task('middleware', ['prompt', 'dotfiles', 'middleware-index', 'rootfiles']);
 };
 
 /**

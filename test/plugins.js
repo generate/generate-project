@@ -44,22 +44,7 @@ describe('plugins', function() {
 
     // pre-populate template data to avoid prompts from `ask` helper
     app.option('askWhen', 'not-answered');
-    app.data({
-      author: {
-        name: 'Jon Schlinkert',
-        username: 'jonschlnkert',
-        url: 'https://github.com/jonschlinkert'
-      },
-      basename: 'LICENSE',
-      name: 'foo',
-      description: 'bar',
-      version: '0.1.0',
-      project: {
-        name: 'foo',
-        description: 'bar',
-        version: '0.1.0'
-      }
-    });
+    app.use(require('verb-repo-data'));
   });
 
   describe('editorconfig', function() {

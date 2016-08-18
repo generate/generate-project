@@ -20,7 +20,10 @@ var actual = path.resolve.bind(path, __dirname, 'actual');
 function exists(name, cb) {
   return function(err) {
     if (err) return cb(err);
-    fs.stat(actual(name), cb);
+    fs.stat(actual(name), function(err, stat) {
+      if (err) return cb(err);
+      del(actual(), cb);
+    });
   };
 }
 
@@ -45,7 +48,11 @@ describe('generate-project', function() {
     app = generate({silent: true});
     app.cwd = actual();
 
+    app.use(require('verb-repo-data'));
+
     // pre-populate template data to avoid prompts from `ask` helper
+    app.option('prompt', false);
+    app.option('check-directory', false);
     app.option('askWhen', 'not-answered');
     app.option('dest', actual());
     app.option('trees', cwd('test/trees'));
@@ -77,14 +84,9 @@ describe('generate-project', function() {
       app.cwd = actual();
     });
 
-    it('should run the `gitignore` task', function(cb) {
-      app.register('project', generator);
-      app.generate('project:gitignore', exists('.gitignore', cb));
-    });
-
     it('should generate a LICENSE file', function(cb) {
       app.register('project', generator);
-      app.generate('project:mit', exists('LICENSE', cb));
+      app.generate('project:license-mit', exists('LICENSE', cb));
     });
 
     it('should generate an index.js file', function(cb) {
@@ -107,9 +109,9 @@ describe('generate-project', function() {
       app.generate('project:package', exists('package.json', cb));
     });
 
-    it('should generate a .gitignore file', function(cb) {
+    it('should run the `gitignore-node` task', function(cb) {
       app.register('project', generator);
-      app.generate('project:gitignore', exists('.gitignore', cb));
+      app.generate('project:gitignore-node', exists('.gitignore', cb));
     });
 
     it('should generate a .gitattributes file', function(cb) {
@@ -130,12 +132,18 @@ describe('generate-project', function() {
 
   describe('generator (CLI)', function() {
     it('should run the default task using the `generate-project` name', function(cb) {
-      if (isTravis) return this.skip();
+      if (isTravis) {
+        this.skip();
+        return cb();
+      }
       app.generate('generate-project', exists('package.json', cb));
     });
 
     it('should run the default task using the `project` generator alias', function(cb) {
-      if (isTravis) return this.skip();
+      if (isTravis) {
+        this.skip();
+        return cb();
+      }
       app.generate('project', exists('package.json', cb));
     });
   });

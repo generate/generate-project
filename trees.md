@@ -215,7 +215,7 @@ Source files and/or libraries used by the [default task](#default):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -244,7 +244,7 @@ Source files and/or libraries used by the [minimal task](#minimal):
  └─┬ node_modules
    ├─┬ generate-gitignore
    │ └─┬ templates
-   │   └── _gitignore
+   │   └── Node.gitignore
    ├─┬ generate-license
    │ └─┬ templates
    │   └── mit.tmpl
@@ -274,7 +274,7 @@ Source files and/or libraries used by the [gulp task](#gulp):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -314,7 +314,7 @@ Source files and/or libraries used by the [base task](#base):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -353,7 +353,7 @@ Source files and/or libraries used by the [generator task](#generator):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -392,7 +392,7 @@ Source files and/or libraries used by the [helper task](#helper):
  │ │   └── _gitattributes
  │ ├─┬ generate-gitignore
  │ │ └─┬ templates
- │ │   └── _gitignore
+ │ │   └── Minimal.gitignore
  │ ├─┬ generate-travis
  │ │ └─┬ templates
  │ │   └── _travis.yml
@@ -431,7 +431,7 @@ Source files and/or libraries used by the [files task](#files):
    │   └── _gitattributes
    ├─┬ generate-gitignore
    │ └─┬ templates
-   │   └── _gitignore
+   │   └── Minimal.gitignore
    ├─┬ generate-travis
    │ └─┬ templates
    │   └── _travis.yml
@@ -488,7 +488,7 @@ Source files and/or libraries used by the [dotfiles task](#dotfiles):
    │   └── _gitattributes
    ├─┬ generate-gitignore
    │ └─┬ templates
-   │   └── _gitignore
+   │   └── Minimal.gitignore
    └─┬ generate-travis
      └─┬ templates
        └── _travis.yml
