@@ -41,9 +41,9 @@ describe('plugins', function() {
     app = generate({silent: true});
     app.cwd = actual();
     app.option('dest', actual());
-
-    // pre-populate template data to avoid prompts from `ask` helper
+    app.option('prompt', false);
     app.option('askWhen', 'not-answered');
+    app.option('check-directory', false);
     app.use(require('verb-repo-data'));
   });
 

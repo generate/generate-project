@@ -3,7 +3,7 @@
 var path = require('path');
 var isValid = require('is-valid-app');
 
-module.exports = function(app) {
+module.exports = function generator(app) {
   if (!isValid(app, 'generate-project')) return;
 
   /**
@@ -54,8 +54,16 @@ module.exports = function(app) {
 
   app.task('prompt', function(cb) {
     if (app.options.prompt === false) return cb();
+
+    app.log();
+    app.log(app.log.yellow(app.log.bold(' Heads up!')));
+    app.log(' Templates were pre-populated with data from user environment and package.json.');
+    app.log(` Disable this with ${app.log.cyan('--nohints')}`);
+    app.log();
+
+    app.base.set('cache.prompted', true);
     app.question('homepage', 'Project homepage?');
-    app.ask([
+    app.ask(filter([
       'name',
       'description',
       'owner',
@@ -63,13 +71,13 @@ module.exports = function(app) {
       'author.name',
       'author.username',
       'author.url'
-    ], cb);
+    ], app), cb);
   });
 
   /**
    * Verify that the current working directory is empty before generating any files.
    * This task is automatically run by the `default` task, but you'll need to call it
-   * directly with any other task.
+   * directly with any other task. This task is from [generate-defaults][].
    *
    * ```sh
    * $ gen project:is-empty
@@ -223,6 +231,7 @@ module.exports = function(app) {
 
   task(app, 'middleware-index', 'middleware/index.js');
   app.task('middleware', ['prompt', 'dotfiles', 'middleware-index', 'rootfiles']);
+  return generator;
 };
 
 /**
@@ -236,10 +245,28 @@ function task(app, name, pattern, dependencies) {
   });
 }
 
+/**
+ * Generate files that match the given `pattern`
+ */
+
 function file(app, pattern) {
   var src = app.options.srcBase || path.join(__dirname, 'templates');
   return app.src(pattern, {cwd: src})
     .pipe(app.renderFile('*')).on('error', console.log)
     .pipe(app.conflicts(app.cwd))
     .pipe(app.dest(app.cwd));
+}
+
+function filter(keys, app) {
+  if (app.option('hints') === false) {
+    return keys;
+  }
+
+  var res = [];
+  for (var i = 0; i < keys.length; i++) {
+    if (!app.has('cache.data', keys[i])) {
+      res.push(keys[i]);
+    }
+  }
+  return res;
 }
