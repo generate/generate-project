@@ -12,8 +12,6 @@
   "files": [
     "generator.js",
     "index.js",
-    "LICENSE",
-    "README.md",
     "templates"
   ],
   "main": "index.js",
