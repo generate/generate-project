@@ -105,7 +105,14 @@
         "generate-package"
       ]
     },
-    "reflinks": [],
+    "reflinks": [
+      "assemble",
+      "base",
+      "common-questions",
+      "generate",
+      "generate-defaults",
+      "gulp"
+    ],
     "lint": {
       "reflinks": true
     }

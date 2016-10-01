@@ -20,26 +20,16 @@ Scaffold out complete code projects from the command line, or use this generator
   * [Install](#install)
   * [Usage](#usage)
   * [Help](#help)
+- [Options](#options)
+  * [noskip](#noskip)
 - [Tasks](#tasks)
-  * [project](#project)
-  * [project:prompt](#projectprompt)
-  * [project:is-empty](#projectis-empty)
-  * [project:files](#projectfiles)
-  * [project:index](#projectindex)
-  * [project:dotfiles](#projectdotfiles)
-  * [project:rootfiles](#projectrootfiles)
-  * [project:gulp](#projectgulp)
-  * [project:base](#projectbase)
-  * [project:minimal](#projectminimal)
-  * [project:generator](#projectgenerator)
-  * [project:helper](#projecthelper)
-  * [project:middleware](#projectmiddleware)
+  * [Available tasks](#available-tasks)
 - [Files trees](#files-trees)
   * [Generated files](#generated-files)
   * [Source files](#source-files)
 - [Next steps](#next-steps)
   * [Running unit tests](#running-unit-tests)
-  * [Publishing your project](#publishing-your-project)
+  * [Publishing your generator](#publishing-your-generator)
 - [About](#about)
   * [Related projects](#related-projects)
   * [Community](#community)
@@ -126,11 +116,33 @@ To see a general help menu and available commands for Generate's CLI, run:
 $ gen help
 ```
 
+## Options
+
+### noskip
+
+Generate looks for data in package.json and/or user environment to be used in templates. By default, this data is normally only used for hints, but this generator uses the data to render templates, and skips any related prompts.
+
+You can disable this feature with the following command:
+
+```sh
+$ gen project --noskip
+```
+
 ## Tasks
 
-All available tasks.
+In this generator, tasks are used for generating specific files. Some tasks generate a single file, some generate multiple files, and some tasks are just aliases for running "groups" of tasks. At least for this generator, the goal is to make it as easy as possible for you to create your own a-la-carte generator experience.
 
-### [project](generator.js#L40)
+**Running tasks**
+
+To run a task, just run `$ gen project:` followed by the name of the task to run. For example, the following command will run the `minimal` task:
+
+```sh
+$ gen project:minimal
+```
+
+### Available tasks
+
+#### [project](generator.js#L40)
 
 Generates the [necessary files](#default-1) for a basic node.js project.
 
@@ -140,7 +152,7 @@ Generates the [necessary files](#default-1) for a basic node.js project.
 $ gen project
 ```
 
-### [project:prompt](generator.js#L55)
+#### [project:prompt](generator.js#L55)
 
 Prompts for commonly used data. This task isn't necessary needed, it's more of a convenience for asking questions up front, instead of as files are generated. The actual messages for questions can be found in the [common-questions](https://github.com/generate/common-questions) library.
 
@@ -150,7 +162,7 @@ Prompts for commonly used data. This task isn't necessary needed, it's more of a
 $ gen project:prompt
 ```
 
-### [project:is-empty](generator.js#L89)
+#### [project:is-empty](generator.js#L104)
 
 Verify that the current working directory is empty before generating any files. This task is automatically run by the `default` task, but you'll need to call it directly with any other task. This task is from [generate-defaults](https://github.com/generate/generate-defaults).
 
@@ -160,7 +172,7 @@ Verify that the current working directory is empty before generating any files. 
 $ gen project:is-empty
 ```
 
-### [project:files](generator.js#L104)
+#### [project:files](generator.js#L119)
 
 Runs the `default` task on all registered micro-generators. See the [generated files](#files-1).
 
@@ -170,7 +182,7 @@ Runs the `default` task on all registered micro-generators. See the [generated f
 $ gen project:files
 ```
 
-### [project:index](generator.js#L116)
+#### [project:index](generator.js#L131)
 
 Generate a basic `index.js` file. This task is used for composition with other tasks.
 
@@ -180,7 +192,7 @@ Generate a basic `index.js` file. This task is used for composition with other t
 $ gen project:index
 ```
 
-### [project:dotfiles](generator.js#L128)
+#### [project:dotfiles](generator.js#L143)
 
 Generate the dotfiles from registered micro-generators. See the [generated files](#dotfiles-1).
 
@@ -190,7 +202,7 @@ Generate the dotfiles from registered micro-generators. See the [generated files
 $ gen project:dotfiles
 ```
 
-### [project:rootfiles](generator.js#L147)
+#### [project:rootfiles](generator.js#L162)
 
 Generate the main project files from registered micro-generators. See the [generated files](#rootfiles-1).
 
@@ -200,7 +212,7 @@ Generate the main project files from registered micro-generators. See the [gener
 $ gen project:rootfiles
 ```
 
-### [project:gulp](generator.js#L164)
+#### [project:gulp](generator.js#L179)
 
 Scaffold out basic project for a [gulp](http://gulpjs.com) plugin. See the [generated files](#gulp-1).
 
@@ -210,7 +222,7 @@ Scaffold out basic project for a [gulp](http://gulpjs.com) plugin. See the [gene
 $ gen project:gulp
 ```
 
-### [project:base](generator.js#L178)
+#### [project:base](generator.js#L193)
 
 Scaffold out a project for a [base](https://github.com/node-base/base) plugin. See the [generated files](#base-1).
 
@@ -220,7 +232,7 @@ Scaffold out a project for a [base](https://github.com/node-base/base) plugin. S
 $ gen project:base
 ```
 
-### [project:minimal](generator.js#L193)
+#### [project:minimal](generator.js#L208)
 
 Scaffold out a minimal code project. See the [generated files](#minimal-1).
 
@@ -228,11 +240,11 @@ Scaffold out a minimal code project. See the [generated files](#minimal-1).
 
 ```sh
 $ gen project:min
-# or
+## or
 $ gen project:minimal
 ```
 
-### [project:generator](generator.js#L206)
+#### [project:generator](generator.js#L221)
 
 Scaffold out a basic [generate](https://github.com/generate/generate) generator project.
 
@@ -242,7 +254,7 @@ Scaffold out a basic [generate](https://github.com/generate/generate) generator 
 $ gen project:generator
 ```
 
-### [project:helper](generator.js#L220)
+#### [project:helper](generator.js#L235)
 
 Scaffold out a basic template helper project.
 
@@ -252,7 +264,7 @@ Scaffold out a basic template helper project.
 $ gen project:helper
 ```
 
-### [project:middleware](generator.js#L232)
+#### [project:middleware](generator.js#L247)
 
 Scaffold out an [assemble](https://github.com/assemble/assemble) middleware project.
 
@@ -261,8 +273,6 @@ Scaffold out an [assemble](https://github.com/assemble/assemble) middleware proj
 ```sh
 $ gen project:middleware
 ```
-
-Visit Generate's [documentation for tasks](https://github.com/generate/generate/blob/master/docs/tasks.md).
 
 ## Files trees
 
@@ -782,11 +792,13 @@ It's never too early to begin running unit tests. When you're ready to get start
 $ npm install && test
 ```
 
-### Publishing your project
+### Publishing your generator
 
-If you're tests are passing and you're ready to publish your project to [npm](https://www.npmjs.com), you can do that now with the following command:
+If you're tests are passing and you're ready to publish your generator to [npm](https://www.npmjs.com), you can do that now with the following command:
 
 **Are you sure you're ready?!**
+
+Let's go!
 
 ```sh
 $ npm publish
@@ -836,8 +848,8 @@ $ npm install -d && npm test
 ### License
 
 Copyright © 2016, [Jon Schlinkert](https://github.com/jonschlinkert).
-Released under the [MIT license](https://github.com/generate/generate-project/blob/master/LICENSE).
+Released under the [MIT license](LICENSE).
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.1.30, on September 19, 2016._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.1.31, on October 01, 2016._
