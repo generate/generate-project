@@ -23,26 +23,26 @@
   },
   "dependencies": {
     "generate-contributing": "^0.2.3",
-    "generate-defaults": "^0.6.4",
+    "generate-defaults": "^0.6.5",
     "generate-editorconfig": "^0.2.1",
     "generate-eslint": "^0.2.1",
     "generate-gitattributes": "^0.1.2",
     "generate-gitignore": "^0.2.6",
     "generate-install": "^0.2.1",
-    "generate-license": "^0.5.1",
-    "generate-package": "^0.6.2",
-    "generate-readme": "^0.3.0",
-    "generate-travis": "^0.2.1",
+    "generate-license": "^0.6.0",
+    "generate-package": "^0.7.0",
+    "generate-readme": "^0.3.1",
+    "generate-travis": "^0.3.0",
     "is-valid-app": "^0.2.1"
   },
   "devDependencies": {
     "delete": "^0.3.2",
-    "generate": "^0.11.2",
-    "gulp-format-md": "^0.1.10",
-    "mocha": "^3.0.2",
+    "generate": "^0.13.1",
+    "gulp-format-md": "^0.1.11",
+    "mocha": "^3.1.0",
     "npm-install-global": "^0.1.2",
-    "verb-generate-readme": "^0.1.30",
-    "verb-repo-data": "^0.1.11",
+    "verb-generate-readme": "^0.1.31",
+    "verb-repo-data": "^0.1.13",
     "verb-trees": "^0.1.0"
   },
   "keywords": [
@@ -105,14 +105,7 @@
         "generate-package"
       ]
     },
-    "reflinks": [
-      "assemble",
-      "base",
-      "common-questions",
-      "generate",
-      "generate-defaults",
-      "gulp"
-    ],
+    "reflinks": [],
     "lint": {
       "reflinks": true
     }
