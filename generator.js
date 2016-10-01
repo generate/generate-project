@@ -54,24 +54,39 @@ module.exports = function generator(app) {
 
   app.task('prompt', function(cb) {
     if (app.options.prompt === false) return cb();
-
-    app.log();
-    app.log(app.log.yellow(app.log.bold(' Heads up!')));
-    app.log(' Templates were pre-populated with data from user environment and package.json.');
-    app.log(` Disable this with ${app.log.cyan('--nohints')}`);
-    app.log();
+    app.base.data(app.cache.data);
 
     app.base.set('cache.prompted', true);
     app.question('homepage', 'Project homepage?');
-    app.ask(filter([
+
+    // common question names
+    var keys = filter([
       'name',
       'description',
       'owner',
       'homepage',
+      'license',
       'author.name',
       'author.username',
       'author.url'
-    ], app), cb);
+    ], app);
+
+    if (keys.skip.length) {
+      app.log();
+      app.log('', app.log.yellow(app.log.bold(app.log.underline('Heads up!'))));
+      app.log();
+      app.log(' The following data from user environment and/or package.json');
+      app.log(' will be used to render templates (if applicable), and prompts');
+      app.log(' for these values will be skipped:');
+      app.log();
+      app.log(formatFields(app, keys.skip));
+      app.log(` Run with ${app.log.cyan('--noskip')} to disable this feature.`);
+      app.log();
+      app.log(' ---');
+      app.log();
+    }
+
+    app.ask(keys.ask, cb);
   });
 
   /**
@@ -257,16 +272,39 @@ function file(app, pattern) {
     .pipe(app.dest(app.cwd));
 }
 
+/**
+ * Filter out keys for data that has already been defined,
+ * to avoid asking unnecessary questions. This can be overridden
+ * with `--noskip`
+ */
+
 function filter(keys, app) {
-  if (app.option('hints') === false) {
-    return keys;
+  if (app.option('hints') === false || app.option('skip') === false) {
+    return {ask: keys, skip: []};
   }
 
-  var res = [];
+  var res = {ask: [], skip: []};
   for (var i = 0; i < keys.length; i++) {
-    if (!app.has('cache.data', keys[i])) {
-      res.push(keys[i]);
+    var key = keys[i];
+    if (!app.has('cache.data', key)) {
+      res.ask.push(key);
+    } else {
+      app.base.data(key, app.data(key));
+      res.skip.push([key, app.data(key)]);
     }
   }
   return res;
+}
+
+/**
+ * Format skipped fields
+ */
+
+function formatFields(app, keys) {
+  var list = '';
+  keys.forEach(function(key) {
+    list += '  · ' + app.log.bold(key[0])
+    list += ': ' + app.log.green(key[1]) + '\n';
+  });
+  return list;
 }
