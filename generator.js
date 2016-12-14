@@ -41,72 +41,6 @@ module.exports = function generator(app) {
   app.task('project', ['is-empty', 'prompt', 'dotfiles', 'index', 'rootfiles']);
 
   /**
-   * Prompts for commonly used data. This task isn't necessary needed, it's more of a convenience
-   * for asking questions up front, instead of as files are generated. The actual messages for
-   * questions can be found in the [common-questions][] library.
-   *
-   * ```sh
-   * $ gen project:prompt
-   * ```
-   * @name project:prompt
-   * @api public
-   */
-
-  app.task('prompt', function(cb) {
-    if (app.options.prompt === false) return cb();
-    app.base.data(app.cache.data);
-
-    app.base.set('cache.prompted', true);
-    app.question('homepage', 'Project homepage?');
-
-    // common question names
-    var keys = filter([
-      'name',
-      'description',
-      'owner',
-      'homepage',
-      'license',
-      'author.name',
-      'author.username',
-      'author.url'
-    ], app);
-
-    if (keys.skip.length) {
-      app.log();
-      app.log('', app.log.yellow(app.log.bold(app.log.underline('Heads up!'))));
-      app.log();
-      app.log(' The following data from user environment and/or package.json');
-      app.log(' will be used to render templates (if applicable), and prompts');
-      app.log(' for these values will be skipped:');
-      app.log();
-      app.log(formatFields(app, keys.skip));
-      app.log(` Run with ${app.log.cyan('--noskip')} to disable this feature.`);
-      app.log();
-      app.log(' ---');
-      app.log();
-    }
-
-    app.ask(keys.ask, cb);
-  });
-
-  /**
-   * Verify that the current working directory is empty before generating any files.
-   * This task is automatically run by the `default` task, but you'll need to call it
-   * directly with any other task. This task is from [generate-defaults][].
-   *
-   * ```sh
-   * $ gen project:is-empty
-   * ```
-   * @name project:is-empty
-   * @api public
-   */
-
-  app.task('is-empty', function(cb) {
-    if (app.option('check-directory') === false) return cb();
-    app.build('check-directory', cb);
-  });
-
-  /**
    * Runs the `default` task on all registered micro-generators. See the [generated files](#files-1).
    *
    * ```sh
@@ -198,7 +132,6 @@ module.exports = function generator(app) {
    *
    * ```sh
    * $ gen project:min
-   * # or
    * $ gen project:minimal
    * ```
    * @name project:minimal
@@ -206,7 +139,19 @@ module.exports = function generator(app) {
    */
 
   app.task('min', ['minimal']);
-  app.task('minimal', ['prompt', 'gitignore-node', 'license-mit', 'package', 'readme']);
+  app.task('minimal', ['is-empty', 'prompt', 'gitignore-node', 'license-mit', 'package', 'readme']);
+
+  /**
+   * Scaffold out a basic code project. See the [generated files](#basic-1).
+   *
+   * ```sh
+   * $ gen project:basic
+   * ```
+   * @name project:basic
+   * @api public
+   */
+
+  app.task('basic', ['is-empty', 'prompt', 'gitignore-node', 'license-choose', 'package', 'readme']);
 
   /**
    * Scaffold out a basic [generate][] generator project.
@@ -219,7 +164,7 @@ module.exports = function generator(app) {
    */
 
   app.task('gen', ['generator']);
-  app.task('generator', ['prompt', 'dotfiles', 'generator-files', 'rootfiles']);
+  app.task('generator', ['is-empty', 'prompt', 'dotfiles', 'generator-files', 'rootfiles']);
   task(app, 'generator-files', 'generator/*.js');
 
   /**
@@ -232,7 +177,19 @@ module.exports = function generator(app) {
    * @api public
    */
 
-  task(app, 'helper', 'helper/*.js', ['files']);
+  task(app, 'helper', 'helper/*.js', ['is-empty', 'prompt', 'files']);
+
+  /**
+   * Scaffold out a basic JavaScript regex project.
+   *
+   * ```sh
+   * $ gen project:regex
+   * ```
+   * @name project:regex
+   * @api public
+   */
+
+  task(app, 'regex', 'regex/*.js', ['is-empty', 'prompt', 'files']);
 
   /**
    * Scaffold out an [assemble][] middleware project.
@@ -245,7 +202,74 @@ module.exports = function generator(app) {
    */
 
   task(app, 'middleware-index', 'middleware/index.js');
-  app.task('middleware', ['prompt', 'dotfiles', 'middleware-index', 'rootfiles']);
+  app.task('middleware', ['is-empty', 'prompt', 'dotfiles', 'middleware-index', 'rootfiles']);
+
+  /**
+   * Prompts for commonly used data. This task isn't necessary needed, it's more of a convenience
+   * for asking questions up front, instead of as files are generated. The actual messages for
+   * questions can be found in the [common-questions][] library.
+   *
+   * ```sh
+   * $ gen project:prompt
+   * ```
+   * @name project:prompt
+   * @api public
+   */
+
+  app.task('prompt', function(cb) {
+    if (app.options.prompt === false) return cb();
+    app.base.data(app.cache.data);
+
+    app.base.set('cache.prompted', true);
+    app.question('homepage', 'Project homepage?');
+
+    // common question names
+    var keys = filter([
+      'name',
+      'description',
+      'owner',
+      'homepage',
+      'license',
+      'author.name',
+      'author.username',
+      'author.url'
+    ], app);
+
+    if (keys.skip.length) {
+      app.log();
+      app.log('', app.log.yellow(app.log.bold(app.log.underline('Heads up!'))));
+      app.log();
+      app.log(' The following data from user environment and/or package.json');
+      app.log(' will be used to render templates (if applicable), and prompts');
+      app.log(' for these values will be skipped:');
+      app.log();
+      app.log(formatFields(app, keys.skip));
+      app.log(` Run with ${app.log.cyan('--noskip')} to disable this feature.`);
+      app.log();
+      app.log(' ---');
+      app.log();
+    }
+
+    app.ask(keys.ask, cb);
+  });
+
+  /**
+   * Verify that the current working directory is empty before generating any files.
+   * This task is automatically run by the `default` task, but you'll need to call it
+   * directly with any other task. This task is from [generate-defaults][].
+   *
+   * ```sh
+   * $ gen project:is-empty
+   * ```
+   * @name project:is-empty
+   * @api public
+   */
+
+  app.task('is-empty', function(cb) {
+    if (app.option('check-directory') === false) return cb();
+    app.build('check-directory', cb);
+  });
+
   return generator;
 };
 
