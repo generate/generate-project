@@ -152,27 +152,7 @@ Generates the [necessary files](#default-1) for a basic node.js project.
 $ gen project
 ```
 
-#### [project:prompt](generator.js#L55)
-
-Prompts for commonly used data. This task isn't necessary needed, it's more of a convenience for asking questions up front, instead of as files are generated. The actual messages for questions can be found in the [common-questions](https://github.com/generate/common-questions) library.
-
-**Example**
-
-```sh
-$ gen project:prompt
-```
-
-#### [project:is-empty](generator.js#L104)
-
-Verify that the current working directory is empty before generating any files. This task is automatically run by the `default` task, but you'll need to call it directly with any other task. This task is from [generate-defaults](https://github.com/generate/generate-defaults).
-
-**Example**
-
-```sh
-$ gen project:is-empty
-```
-
-#### [project:files](generator.js#L119)
+#### [project:files](generator.js#L53)
 
 Runs the `default` task on all registered micro-generators. See the [generated files](#files-1).
 
@@ -182,7 +162,7 @@ Runs the `default` task on all registered micro-generators. See the [generated f
 $ gen project:files
 ```
 
-#### [project:index](generator.js#L131)
+#### [project:index](generator.js#L65)
 
 Generate a basic `index.js` file. This task is used for composition with other tasks.
 
@@ -192,7 +172,7 @@ Generate a basic `index.js` file. This task is used for composition with other t
 $ gen project:index
 ```
 
-#### [project:dotfiles](generator.js#L143)
+#### [project:dotfiles](generator.js#L77)
 
 Generate the dotfiles from registered micro-generators. See the [generated files](#dotfiles-1).
 
@@ -202,7 +182,7 @@ Generate the dotfiles from registered micro-generators. See the [generated files
 $ gen project:dotfiles
 ```
 
-#### [project:rootfiles](generator.js#L162)
+#### [project:rootfiles](generator.js#L96)
 
 Generate the main project files from registered micro-generators. See the [generated files](#rootfiles-1).
 
@@ -212,7 +192,7 @@ Generate the main project files from registered micro-generators. See the [gener
 $ gen project:rootfiles
 ```
 
-#### [project:gulp](generator.js#L179)
+#### [project:gulp](generator.js#L113)
 
 Scaffold out basic project for a [gulp](http://gulpjs.com) plugin. See the [generated files](#gulp-1).
 
@@ -222,7 +202,7 @@ Scaffold out basic project for a [gulp](http://gulpjs.com) plugin. See the [gene
 $ gen project:gulp
 ```
 
-#### [project:base](generator.js#L193)
+#### [project:base](generator.js#L127)
 
 Scaffold out a project for a [base](https://github.com/node-base/base) plugin. See the [generated files](#base-1).
 
@@ -232,7 +212,7 @@ Scaffold out a project for a [base](https://github.com/node-base/base) plugin. S
 $ gen project:base
 ```
 
-#### [project:minimal](generator.js#L208)
+#### [project:minimal](generator.js#L141)
 
 Scaffold out a minimal code project. See the [generated files](#minimal-1).
 
@@ -240,11 +220,20 @@ Scaffold out a minimal code project. See the [generated files](#minimal-1).
 
 ```sh
 $ gen project:min
-## or
 $ gen project:minimal
 ```
 
-#### [project:generator](generator.js#L221)
+#### [project:basic](generator.js#L154)
+
+Scaffold out a basic code project. See the [generated files](#basic-1).
+
+**Example**
+
+```sh
+$ gen project:basic
+```
+
+#### [project:generator](generator.js#L166)
 
 Scaffold out a basic [generate](https://github.com/generate/generate) generator project.
 
@@ -254,7 +243,7 @@ Scaffold out a basic [generate](https://github.com/generate/generate) generator 
 $ gen project:generator
 ```
 
-#### [project:helper](generator.js#L235)
+#### [project:helper](generator.js#L180)
 
 Scaffold out a basic template helper project.
 
@@ -264,7 +253,17 @@ Scaffold out a basic template helper project.
 $ gen project:helper
 ```
 
-#### [project:middleware](generator.js#L247)
+#### [project:regex](generator.js#L192)
+
+Scaffold out a basic JavaScript regex project.
+
+**Example**
+
+```sh
+$ gen project:regex
+```
+
+#### [project:middleware](generator.js#L204)
 
 Scaffold out an [assemble](https://github.com/assemble/assemble) middleware project.
 
@@ -272,6 +271,26 @@ Scaffold out an [assemble](https://github.com/assemble/assemble) middleware proj
 
 ```sh
 $ gen project:middleware
+```
+
+#### [project:prompt](generator.js#L219)
+
+Prompts for commonly used data. This task isn't necessary needed, it's more of a convenience for asking questions up front, instead of as files are generated. The actual messages for questions can be found in the [common-questions](https://github.com/generate/common-questions) library.
+
+**Example**
+
+```sh
+$ gen project:prompt
+```
+
+#### [project:is-empty](generator.js#L268)
+
+Verify that the current working directory is empty before generating any files. This task is automatically run by the `default` task, but you'll need to call it directly with any other task. This task is from [generate-defaults](https://github.com/generate/generate-defaults).
+
+**Example**
+
+```sh
+$ gen project:is-empty
 ```
 
 ## Files trees
@@ -852,4 +871,4 @@ Released under the [MIT license](LICENSE).
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.1.31, on October 01, 2016._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.1.31, on December 14, 2016._
