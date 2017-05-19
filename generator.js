@@ -20,6 +20,8 @@ module.exports = function generator(app) {
   app.use(require('generate-contributing'));
   app.use(require('generate-editorconfig'));
   app.use(require('generate-eslint'));
+  app.use(require('generate-gh-repo'));
+  app.use(require('generate-git'));
   app.use(require('generate-gitattributes'));
   app.use(require('generate-gitignore'));
   app.use(require('generate-license'));
@@ -152,6 +154,19 @@ module.exports = function generator(app) {
    */
 
   app.task('basic', ['is-empty', 'prompt', 'gitignore-node', 'license-choose', 'package', 'readme']);
+
+  /**
+   * Scaffold out a basic code project. See the [generated files](#basic-1).
+   *
+   * ```sh
+   * $ gen project:basic
+   * ```
+   * @name project:basic
+   * @api public
+   */
+
+  app.task('update-rc', ['is-empty', 'prompt', 'dotfiles', 'update-configfile', 'rootfiles']);
+  task(app, 'update-configfile', 'update/_updaterc.json');
 
   /**
    * Scaffold out a basic [generate][] generator project.
