@@ -14,6 +14,7 @@ var del = require('delete');
 module.exports = function(app) {
   app.use(require('verb-generate-readme'));
   app.option('check-directory', false);
+  app.option('overwrite', true);
   app.option('prompt', false);
 
   app.use(trees(generator, [
