@@ -281,8 +281,11 @@ module.exports = function generator(app) {
    */
 
   app.task('is-empty', function(cb) {
-    if (app.option('check-directory') === false) return cb();
-    app.build('check-directory', cb);
+    if (app.option('check-directory') !== false) {
+      app.build('check-directory', cb);
+    } else {
+      cb();
+    }
   });
 
   return generator;
