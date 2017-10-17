@@ -22,30 +22,32 @@
     "test": "mocha"
   },
   "dependencies": {
+    "data-store": "^1.0.0",
     "generate-contributing": "^0.3.0",
     "generate-defaults": "^0.6.6",
     "generate-editorconfig": "^0.2.1",
-    "generate-eslint": "^0.2.1",
+    "generate-eslint": "^1.0.0",
     "generate-gh-repo": "^1.1.0",
     "generate-git": "^0.2.0",
     "generate-gitattributes": "^0.1.2",
     "generate-gitignore": "^0.2.6",
-    "generate-install": "^0.3.0",
-    "generate-license": "^0.6.1",
+    "generate-install": "^0.3.1",
+    "generate-license": "^1.0.0",
     "generate-package": "^0.7.3",
     "generate-readme": "^0.3.1",
     "generate-travis": "^0.3.1",
-    "is-valid-app": "^0.3.0"
+    "is-valid-app": "^0.3.0",
+    "prompt-checkbox": "^2.2.0"
   },
   "devDependencies": {
-    "delete": "^1.0.1",
-    "generate": "^0.13.1",
-    "gulp-format-md": "^0.1.12",
-    "mocha": "^3.4.1",
+    "mocha": "^4.0.1",
+    "generate": "^0.14.0",
     "npm-install-global": "^1.0.0",
-    "verb-generate-readme": "^0.6.0",
+    "delete": "^1.1.0",
     "verb-repo-data": "^0.1.15",
-    "verb-trees": "^0.1.0"
+    "gulp-format-md": "^1.0.0",
+    "verb-trees": "^0.1.0",
+    "verb-generate-readme": "^0.6.0"
   },
   "keywords": [
     "boilerplate",
