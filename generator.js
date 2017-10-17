@@ -2,9 +2,19 @@
 
 var path = require('path');
 var isValid = require('is-valid-app');
+var Prompt = require('prompt-checkbox');
+var Store = require('data-store');
 
 module.exports = function generator(app) {
   if (!isValid(app, 'generate-project')) return;
+  var store = new Store('generate-user-config');
+  app.data(store.data);
+
+  /**
+   * Listen for errors
+   */
+
+  app.on('error', console.error);
 
   /**
    * Plugins
@@ -17,17 +27,17 @@ module.exports = function generator(app) {
    * Micro-generators (as plugins)
    */
 
-  app.use(require('generate-contributing'));
-  app.use(require('generate-editorconfig'));
-  app.use(require('generate-eslint'));
-  app.use(require('generate-gh-repo'));
-  app.use(require('generate-git'));
-  app.use(require('generate-gitattributes'));
-  app.use(require('generate-gitignore'));
-  app.use(require('generate-license'));
-  app.use(require('generate-package'));
-  app.use(require('generate-readme'));
-  app.use(require('generate-travis'));
+  app.register('contributing', require('generate-contributing'));
+  app.register('editorconfig', require('generate-editorconfig'));
+  app.register('eslint', require('generate-eslint'));
+  app.register('github', require('generate-gh-repo'));
+  app.register('git', require('generate-git'));
+  app.register('gitattributes', require('generate-gitattributes'));
+  app.register('gitignore', require('generate-gitignore'));
+  app.register('license', require('generate-license'));
+  app.register('package', require('generate-package'));
+  app.register('readme', require('generate-readme'));
+  app.register('travis', require('generate-travis'));
 
   /**
    * Generates the [necessary files](#default-1) for a basic node.js project.
@@ -40,10 +50,34 @@ module.exports = function generator(app) {
    */
 
   app.task('default', ['project']);
-  app.task('project', ['is-empty', 'prompt', 'dotfiles', 'index', 'rootfiles']);
+  app.task('project', ['is-empty', 'prompt', 'rootfiles', 'dotfiles', 'index']);
 
   /**
-   * Runs the `default` task on all registered micro-generators. See the [generated files](#files-1).
+   * Select one or more sub-generators or tasks to run.
+   *
+   * ```sh
+   * $ gen project:choose
+   * ```
+   * @name choose
+   * @api public
+   */
+
+  app.task('choose', function(cb) {
+    var prompt = new Prompt({
+      message: 'Select the tasks or sub-generators to run:',
+      choices: Object.keys(app.generators)
+    });
+
+    prompt.run()
+      .then(function(answer) {
+        app.generate(answer, cb);
+      });
+  });
+
+  /**
+   * Generate starter files for a project. Runs the `default` task
+   * on all micro-generators registered on `generate-project`.
+   * See the list of [generated files](#files-1).
    *
    * ```sh
    * $ gen project:files
@@ -52,10 +86,11 @@ module.exports = function generator(app) {
    * @api public
    */
 
-  app.task('files', ['dotfiles', 'rootfiles']);
+  app.task('files', ['rootfiles', 'dotfiles']);
 
   /**
-   * Generate a basic `index.js` file. This task is used for composition with other tasks.
+   * Generate a basic `index.js` file. This task is used for composition
+   * with other tasks.
    *
    * ```sh
    * $ gen project:index
@@ -67,7 +102,8 @@ module.exports = function generator(app) {
   task(app, 'index', 'index.js');
 
   /**
-   * Generate the dotfiles from registered micro-generators. See the [generated files](#dotfiles-1).
+   * Generate the dotfiles from registered micro-generators. See
+   * the [generated files](#dotfiles-1).
    *
    * ```sh
    * $ gen project:dotfiles
@@ -76,17 +112,19 @@ module.exports = function generator(app) {
    * @api public
    */
 
-  app.task('dotfiles', [
-    'editorconfig',
-    'eslintrc',
-    'gitattributes',
-    'gitignore-minimal',
-    'travis'
-  ]);
+  app.task('dotfiles', function(cb) {
+    app.generate([
+      'gitattributes',
+      'gitignore:minimal',
+      'eslint:eslintrc',
+      'editorconfig',
+      'travis'
+    ], cb);
+  });
 
   /**
-   * Generate the main project files from registered micro-generators. See
-   * the [generated files](#rootfiles-1).
+   * Generate the main project files from registered micro-generators.
+   * See the [generated files](#rootfiles-1).
    *
    * ```sh
    * $ gen project:rootfiles
@@ -95,15 +133,18 @@ module.exports = function generator(app) {
    * @api public
    */
 
-  app.task('rootfiles', [
-    'contributing',
-    'license-mit',
-    'package',
-    'readme'
-  ]);
+  app.task('rootfiles', function(cb) {
+    app.generate([
+      `license:${app.options.license || 'mit'}`,
+      'contributing',
+      'package',
+      'readme'
+    ], cb);
+  });
 
   /**
-   * Scaffold out basic project for a [gulp][] plugin. See the [generated files](#gulp-1).
+   * Scaffold out basic project for a [gulp][] plugin. See
+   * the [generated files](#gulp-1).
    *
    * ```sh
    * $ gen project:gulp
@@ -112,12 +153,13 @@ module.exports = function generator(app) {
    * @api public
    */
 
-  app.task('gulp', ['prompt', 'dotfiles', 'gulp-plugin', 'gulp-file', 'rootfiles']);
+  app.task('gulp', ['prompt', 'rootfiles', 'dotfiles', 'gulp-plugin', 'gulp-file']);
   task(app, 'gulp-file', 'gulp/gulpfile.js');
   task(app, 'gulp-plugin', 'gulp/plugin.js');
 
   /**
-   * Scaffold out a project for a [base][] plugin. See the [generated files](#base-1).
+   * Scaffold out a project for a [base][] plugin. See the
+   * [generated files](#base-1).
    *
    * ```sh
    * $ gen project:base
@@ -126,7 +168,7 @@ module.exports = function generator(app) {
    * @api public
    */
 
-  app.task('base', ['prompt', 'dotfiles', 'base-index', 'rootfiles']);
+  app.task('base', ['prompt', 'rootfiles', 'dotfiles', 'base-index']);
   task(app, 'base-index', 'base/plugin.js');
 
   /**
@@ -141,7 +183,16 @@ module.exports = function generator(app) {
    */
 
   app.task('min', ['minimal']);
-  app.task('minimal', ['is-empty', 'prompt', 'gitignore-node', 'license-mit', 'package', 'readme']);
+  app.task('minimal', function(cb) {
+    app.generate([
+      'is-empty',
+      'prompt',
+      'gitignore:node',
+      `license:${app.options.license || 'mit'}`,
+      'package',
+      'readme'
+    ], cb);
+  });
 
   /**
    * Scaffold out a basic code project. See the [generated files](#basic-1).
@@ -153,7 +204,16 @@ module.exports = function generator(app) {
    * @api public
    */
 
-  app.task('basic', ['is-empty', 'prompt', 'gitignore-node', 'license-choose', 'package', 'readme']);
+  app.task('basic', function(cb) {
+    app.generate([
+      'is-empty',
+      'prompt',
+      'gitignore:node',
+      'license:choose',
+      'package',
+      'readme'
+    ], cb);
+  });
 
   /**
    * Scaffold out a basic code project. See the [generated files](#basic-1).
@@ -165,8 +225,14 @@ module.exports = function generator(app) {
    * @api public
    */
 
-  app.task('update-rc', ['is-empty', 'prompt', 'dotfiles', 'update-configfile', 'rootfiles']);
   task(app, 'update-configfile', 'update/_updaterc.json');
+  app.task('update-rc', [
+    'is-empty',
+    'prompt',
+    'rootfiles',
+    'dotfiles',
+    'update-configfile'
+  ]);
 
   /**
    * Scaffold out a basic [generate][] generator project.
@@ -178,9 +244,15 @@ module.exports = function generator(app) {
    * @api public
    */
 
-  app.task('gen', ['generator']);
-  app.task('generator', ['is-empty', 'prompt', 'dotfiles', 'generator-files', 'rootfiles']);
   task(app, 'generator-files', 'generator/*.js');
+  app.task('gen', ['generator']);
+  app.task('generator', [
+    'is-empty',
+    'prompt',
+    'rootfiles',
+    'dotfiles',
+    'generator-files'
+  ]);
 
   /**
    * Scaffold out a basic template helper project.
@@ -217,12 +289,19 @@ module.exports = function generator(app) {
    */
 
   task(app, 'middleware-index', 'middleware/index.js');
-  app.task('middleware', ['is-empty', 'prompt', 'dotfiles', 'middleware-index', 'rootfiles']);
+  app.task('middleware', [
+    'is-empty',
+    'prompt',
+    'rootfiles',
+    'dotfiles',
+    'middleware-index'
+  ]);
 
   /**
-   * Prompts for commonly used data. This task isn't necessary needed, it's more of a convenience
-   * for asking questions up front, instead of as files are generated. The actual messages for
-   * questions can be found in the [common-questions][] library.
+   * Prompts for commonly used data. This task isn't necessary
+   * needed, it's more of a convenience for asking questions up front,
+   * instead of as files are generated. The actual messages for questions
+   * can be found in the [common-questions][] library.
    *
    * ```sh
    * $ gen project:prompt
@@ -239,7 +318,7 @@ module.exports = function generator(app) {
     app.question('homepage', 'Project homepage?');
 
     // common question names
-    var keys = filter([
+    var keys = mapValues([
       'name',
       'description',
       'owner',
@@ -297,8 +376,7 @@ module.exports = function generator(app) {
 
 function task(app, name, pattern, dependencies) {
   app.task(name, dependencies || [], function(cb) {
-    if (!pattern) return cb();
-    return file(app, pattern);
+    return pattern ? file(app, pattern) : cb();
   });
 }
 
@@ -315,12 +393,12 @@ function file(app, pattern) {
 }
 
 /**
- * Filter out keys for data that has already been defined,
+ * Map values and filter out keys for data that has already been defined,
  * to avoid asking unnecessary questions. This can be overridden
  * with `--noskip`
  */
 
-function filter(keys, app) {
+function mapValues(keys, app) {
   if (app.option('hints') === false || app.option('skip') === false) {
     return {ask: keys, skip: []};
   }
@@ -345,7 +423,7 @@ function filter(keys, app) {
 function formatFields(app, keys) {
   var list = '';
   keys.forEach(function(key) {
-    list += '  · ' + app.log.bold(key[0])
+    list += '  · ' + app.log.bold(key[0]);
     list += ': ' + app.log.green(key[1]) + '\n';
   });
   return list;

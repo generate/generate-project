@@ -65,7 +65,11 @@ describe('generate-project', function() {
     it('should extend tasks onto the instance', function() {
       app.use(generator);
       assert(app.tasks.hasOwnProperty('default'));
-      assert(app.tasks.hasOwnProperty('package'));
+    });
+
+    it('should extend generators onto the instance', function() {
+      app.use(generator);
+      assert(app.generators.hasOwnProperty('package'));
     });
 
     it('should run the `default` task with .build', function(cb) {
@@ -86,7 +90,7 @@ describe('generate-project', function() {
 
     it('should generate a LICENSE file', function(cb) {
       app.register('project', generator);
-      app.generate('project:license-mit', exists('LICENSE', cb));
+      app.generate('project.license:mit', exists('LICENSE', cb));
     });
 
     it('should generate an index.js file', function(cb) {
@@ -96,32 +100,32 @@ describe('generate-project', function() {
 
     it('should generate a .eslintrc.json file', function(cb) {
       app.register('project', generator);
-      app.generate('project:eslintrc', exists('.eslintrc.json', cb));
+      app.generate('project.eslint:eslintrc', exists('.eslintrc.json', cb));
     });
 
     it('should generate a README.md file', function(cb) {
       app.register('project', generator);
-      app.generate('project:readme', exists('README.md', cb));
+      app.generate('project.readme', exists('README.md', cb));
     });
 
     it('should generate a package.json file', function(cb) {
       app.register('project', generator);
-      app.generate('project:package', exists('package.json', cb));
+      app.generate('project.package', exists('package.json', cb));
     });
 
     it('should run the `gitignore-node` task', function(cb) {
       app.register('project', generator);
-      app.generate('project:gitignore-node', exists('.gitignore', cb));
+      app.generate('project.gitignore:node', exists('.gitignore', cb));
     });
 
     it('should generate a .gitattributes file', function(cb) {
       app.register('project', generator);
-      app.generate('project:gitattributes', exists('.gitattributes', cb));
+      app.generate('project.gitattributes', exists('.gitattributes', cb));
     });
 
     it('should generate a .editorconfig file', function(cb) {
       app.register('project', generator);
-      app.generate('project:editorconfig', exists('.editorconfig', cb));
+      app.generate('project.editorconfig', exists('.editorconfig', cb));
     });
 
     it('should generate dotfiles', function(cb) {
@@ -156,7 +160,7 @@ describe('generate-project', function() {
 
     it('should run the `package` task', function(cb) {
       app.register('project', generator);
-      app.generate('project:package', exists('package.json', cb));
+      app.generate('project.package', exists('package.json', cb));
     });
 
     it('should run the `default` task when defined explicitly', function(cb) {
@@ -210,7 +214,7 @@ describe('generate-project', function() {
       app.register('foo', function(foo) {
         foo.register('project', generator);
       });
-      app.generate('foo.project:package', exists('package.json', cb));
+      app.generate('foo.project.package', exists('package.json', cb));
     });
 
     it('should work with nested sub-generators', function(cb) {

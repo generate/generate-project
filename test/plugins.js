@@ -45,64 +45,55 @@ describe('plugins', function() {
     app.option('askWhen', 'not-answered');
     app.option('check-directory', false);
     app.use(require('verb-repo-data'));
+    app.use(generator);
   });
 
   describe('editorconfig', function() {
     it('should run the `editorconfig` task with .build', function(cb) {
-      app.use(generator);
-      app.build('editorconfig', exists('.editorconfig', cb));
+      app.generate('editorconfig', exists('.editorconfig', cb));
     });
 
     it('should run the `editorconfig` task with .generate', function(cb) {
-      app.use(generator);
       app.generate('editorconfig', exists('.editorconfig', cb));
     });
   });
 
   describe('eslint', function() {
     it('should run the `eslint` task with .build', function(cb) {
-      app.use(generator);
-      app.build('eslintrc', exists('.eslintrc.json', cb));
+      app.generate('eslint:eslintrc', exists('.eslintrc.json', cb));
     });
 
     it('should run the `eslint` task with .generate', function(cb) {
-      app.use(generator);
       app.generate('eslint', exists('.eslintrc.json', cb));
     });
   });
 
   describe('license', function() {
     it('should run the `mit` task with .build', function(cb) {
-      app.use(generator);
-      app.build('mit', exists('LICENSE', cb));
+      app.generate('license:mit', exists('LICENSE', cb));
     });
 
     it('should run the `mit` task with .generate', function(cb) {
-      app.use(generator);
-      app.generate('mit', exists('LICENSE', cb));
+      app.generate('license:mit', exists('LICENSE', cb));
     });
   });
 
   describe('package', function() {
     it('should run the `package` task with .build', function(cb) {
-      app.use(generator);
-      app.build('package', exists('package.json', cb));
+      app.generate('package', exists('package.json', cb));
     });
 
     it('should run the `package` task with .generate', function(cb) {
-      app.use(generator);
       app.generate('package', exists('package.json', cb));
     });
   });
 
   describe('travis', function() {
     it('should run the `travis` task with .build', function(cb) {
-      app.use(generator);
-      app.build('travis', exists('.travis.yml', cb));
+      app.generate('travis', exists('.travis.yml', cb));
     });
 
     it('should run the `travis` task with .generate', function(cb) {
-      app.use(generator);
       app.generate('travis', exists('.travis.yml', cb));
     });
   });
